@@ -1,0 +1,15 @@
+{
+  "name": "jsxbtree",
+  "version": "1.0.0",
+  "description": "This is a JSX based behavior tree library for JS/TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Behavior",
+    "Tree"
+  ],
+  "author": "Donald Baird",
+  "license": "ISC"
+}
