@@ -1,6 +1,6 @@
-import {NodeState} from "./NodeState";
 import {LeafNode} from "./LeafNode";
-import {IBaseActionProps} from "./Action";
+import {IBaseActionProps} from "../index";
+import {NodeState} from "../nodeState";
 
 
 export class WaitNode extends LeafNode {

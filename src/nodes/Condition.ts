@@ -1,8 +1,8 @@
 
-import {NodeState} from "./NodeState";
 import {LeafNode} from "./LeafNode";
 import {BTreeCallbackFn} from "./Decorators/BTreeAttribute";
-import {IBaseActionProps} from "./Action";
+import {IBaseActionProps} from "../index";
+import {NodeState} from "../nodeState";
 
 /**
  * A Condition leaf node.

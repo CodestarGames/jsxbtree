@@ -1,6 +1,6 @@
-import {NodeState} from "./NodeState";
 import {CompositeNode} from "./CompositeNode";
 import {Node} from "./Node";
+import {NodeState} from "../nodeState";
 
 export class LottoNode extends CompositeNode {
 

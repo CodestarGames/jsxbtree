@@ -1,5 +1,4 @@
-import {NodeState} from "../nodes/NodeState";
-import {IDecoratorsFromJSXProps} from "../nodes/Node";
+import {NodeState} from "../nodeState";
 
 export abstract class Action {
 
@@ -48,13 +47,6 @@ export abstract class Action {
         return NodeState.FAILED;
     }
 
-}
-
-
-export interface IBaseActionProps extends IDecoratorsFromJSXProps {
-    parentUid?,
-    conditions?: any
-    blackboard?: any
 }
 
 

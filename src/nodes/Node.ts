@@ -1,6 +1,5 @@
 import {GuardPath, GuardUnsatisifedException} from "./Guards/GuardUnsatisifedException";
 import {BTreeAttribute, BTreeCallbackFn, BTreeGuardFn} from "./Decorators/BTreeAttribute";
-import {NodeState} from "./NodeState";
 import While from "./Guards/While";
 import Until from "./Guards/Until";
 import Cond from "./Decorators/Cond";
@@ -9,6 +8,7 @@ import AlwaysFail from "./Decorators/AlwaysFail";
 import Entry from "./CallBacks/Entry";
 import Step from "./CallBacks/Step";
 import Exit from "./CallBacks/Exit";
+import {NodeState} from "../nodeState";
 
 export interface IDecoratorsFromJSXProps {
 

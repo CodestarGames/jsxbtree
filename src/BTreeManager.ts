@@ -1,18 +1,17 @@
-import jsx from './index'
 import {Timer} from "./Timer";
 import {Node} from "./nodes/Node";
+import {Workflo} from "./workflo/workflo";
+import {NodeState} from "./nodeState";
 import {GuardPath} from "./nodes/Guards/GuardUnsatisifedException";
 import {CompositeNode} from "./nodes/CompositeNode";
-import {NodeState} from "./nodes/NodeState";
-import {Workflo} from "./workflo/workflo";
 
-export default class BTreeManager {
+export class BTreeManager {
     private trees: Map<number, BTree.Node>
     private timer: Timer;
     private static _instance: BTreeManager;
     private nodeMap: Map<string, Node>;
     private _treeGeneratorTasks: Map<BTree.Node, Array<any>>;
-    private currentGenerators:  Map<string, any>;
+    private currentGenerators: Map<string, any>;
     private workflo: Workflo;
     private broadcastChannel: BroadcastChannel;
 
@@ -34,7 +33,7 @@ export default class BTreeManager {
     }
 
     start(Tree: (props: any) => BTree.Node, tick: number, blackboard: any) {
-        let treeInst = <Tree blackboard={blackboard} />;
+        let treeInst = Tree({blackboard});
 
         this._applyLeafNodeGuardPaths(treeInst);
         this._treeGeneratorTasks.set(treeInst, [...treeInst.children]);
@@ -64,7 +63,7 @@ export default class BTreeManager {
         }
     }
 
-    private *processTick(tree): IterableIterator<NodeState> {
+    private* processTick(tree): IterableIterator<NodeState> {
         while (true) {
 
             let generatorTasks = this._treeGeneratorTasks.get(tree);
@@ -93,9 +92,9 @@ export default class BTreeManager {
         this.timer.update(dt);
     }
 
-    getParentByUid(uid: string){
+    getParentByUid(uid: string) {
         let parent = this.nodeMap.get(uid);
-        if(!parent) {
+        if (!parent) {
             throw new Error('no parent node found')
         }
         return parent;
@@ -110,7 +109,7 @@ export default class BTreeManager {
      */
     _applyLeafNodeGuardPaths(tree: BTree.Node) {
 
-        this._getAllNodePaths(tree).forEach((path : Array<Node>) => {
+        this._getAllNodePaths(tree).forEach((path: Array<Node>) => {
             // Each node in the current path will have to be assigned a guard path, working from the root outwards.
             for (let depth = 0; depth < path.length; depth++) {
                 // Get the node in the path at the current depth.
@@ -138,12 +137,12 @@ export default class BTreeManager {
      * Gets a multi-dimensional array of root->leaf node paths.
      * @returns A multi-dimensional array of root->leaf node paths.
      */
-    _getAllNodePaths(tree) : unknown[] {
+    _getAllNodePaths(tree): unknown[] {
         const nodePaths = new Array<Node>();
 
         let blackboard = tree.blackboard;
 
-        const findLeafNodes = (path : any, node) => {
+        const findLeafNodes = (path: any, node) => {
             // Add the current node to the path.
             path = path.concat(node);
             node.blackboard = blackboard;
@@ -193,7 +192,7 @@ export default class BTreeManager {
                 parentId: parentUid
             });
 
-            if(!node.isLeafNode()) {
+            if (!node.isLeafNode()) {
                 // Process each of the nodes children if it is not a leaf node.
                 node.children.forEach((child) => processNode(child, node.uid));
 
@@ -210,7 +209,7 @@ export default class BTreeManager {
 
         let newWindow = open('/?debugTreeChild=true', 'example', 'width=640,height=480')
         newWindow.focus();
-        newWindow.onload = function() {
+        newWindow.onload = function () {
 
             let html = `<div id="loopVisualizer" style="background: white; width: 100%; height: 100%;"></div>`;
             newWindow.document.body.insertAdjacentHTML('afterbegin', html);
@@ -227,7 +226,9 @@ export default class BTreeManager {
                     nodeParentField: "parentId",
                     definition: {
                         default: {
-                            tooltip: function (node) { return node.item.caption },
+                            tooltip: function (node) {
+                                return node.item.caption
+                            },
                             template: (node) => {
                                 if (node.item.decorators) {
 
@@ -269,11 +270,10 @@ export default class BTreeManager {
                 };
 
                 // @ts-ignore
-                if(!newWindow.workFlo) {
+                if (!newWindow.workFlo) {
                     // @ts-ignore
                     newWindow.workFlo = new Workflo(newWindow.document.getElementById('loopVisualizer'), options);
-                }
-                else {
+                } else {
                     // @ts-ignore
                     newWindow.workFlo.refresh(nodes);
                 }
@@ -284,14 +284,4 @@ export default class BTreeManager {
     };
 
 
-}
-
-
-export const handleTreeDebugger = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if(!urlParams.get('debugTree')) {
-        let visDiv = document.getElementById('loopVisualizer');
-        if(visDiv)
-            visDiv.remove();
-    }
 }

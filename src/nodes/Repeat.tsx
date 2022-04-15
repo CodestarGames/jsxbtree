@@ -1,5 +1,5 @@
-import {NodeState} from "./NodeState";
 import {CompositeNode, ICompositeNodeParams} from "./CompositeNode";
+import {NodeState} from "../nodeState";
 
 export interface IRepeatParams extends ICompositeNodeParams {
     iterations?: number | (() => number);

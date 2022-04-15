@@ -1,6 +1,6 @@
 import {IDecoratorsFromJSXProps, Node} from "./Node";
-import {NodeState} from "./NodeState";
 import Exit from "./CallBacks/Exit";
+import {NodeState} from "../nodeState";
 
 export abstract class CompositeNode extends Node {
     constructor(public props) {

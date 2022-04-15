@@ -1,5 +1,5 @@
-import {NodeState} from "./NodeState";
 import {CompositeNode} from "./CompositeNode";
+import {NodeState} from "../nodeState";
 
 
 export class SequenceNode extends CompositeNode {

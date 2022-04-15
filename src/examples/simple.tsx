@@ -1,6 +1,6 @@
 import jsx from '../'
 import ActionConsoleLog from "./ActionConsoleLog";
-import BTreeManager from "../BTreeManager";
+import {BTreeManager} from "../BTreeManager";
 
 function TestTree (props) {
     return (

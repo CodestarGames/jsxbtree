@@ -1,9 +1,8 @@
-import jsx, {Fragment} from '../'
+import jsx, {cloneChildren, Fragment, IBaseActionProps} from '../'
 import ActionConsoleLog from "./ActionConsoleLog";
-import {cloneChildren} from "../cloneChildren";
 import {Node} from "../nodes/Node";
-import {IBaseActionProps} from "../nodes/Action";
-import BTreeManager from "../BTreeManager";
+import {BTreeManager} from "../BTreeManager";
+
 
 function TestTree (props) {
     return (

@@ -1,5 +1,5 @@
 import {LeafNode} from "../nodes/LeafNode";
-import {NodeState} from "../nodes/NodeState";
+import {NodeState} from "../nodeState";
 
 export class ActionNodeBase extends LeafNode {
     private updatePromiseStateResult: any;
