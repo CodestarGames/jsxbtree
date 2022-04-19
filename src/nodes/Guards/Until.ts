@@ -1,8 +1,8 @@
 import {BTreeAttribute} from '../Decorators/BTreeAttribute'
 
 /**
- * An UNTIL guard which is satisfied as long as the given condition remains false.
- * @param condition The name of the condition function that determines whether the guard is satisfied.
+ * An UNTIL guard which is satisfied as long as the given Condition remains false.
+ * @param Condition The name of the Condition function that determines whether the guard is satisfied.
  */
 export default class Until extends BTreeAttribute {
 
@@ -20,7 +20,7 @@ export default class Until extends BTreeAttribute {
     getDetails = () => ({condition: this.condition?.name || 'anonymous', type: this.getType()});
 
     /**
-     * Gets the condition of the guard.
+     * Gets the Condition of the guard.
      */
     getCondition = () => this.condition;
 

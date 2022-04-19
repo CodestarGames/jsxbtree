@@ -1,6 +1,6 @@
 /**
  * An exception thrown when evaluating node guard path conditions and a conditions fails.
- * @param source The node at which a guard condition failed.
+ * @param source The node at which a guard Condition failed.
  */
 export class GuardUnsatisifedException extends Error {
     private readonly source: any;
@@ -16,12 +16,12 @@ export class GuardUnsatisifedException extends Error {
     /**
      * The exception message.
      */
-    static message = "A guard path condition has failed";
+    static message = "A guard path Condition has failed";
 
     /**
-     * Gets whether the specified node is the node at which a guard condition failed.
+     * Gets whether the specified node is the node at which a guard Condition failed.
      * @param node The node to check against the source node.
-     * @returns Whether the specified node is the node at which a guard condition failed.
+     * @returns Whether the specified node is the node at which a guard Condition failed.
      */
     isSourceNode = (node) => node === this.source;
 }
@@ -48,7 +48,7 @@ export class GuardPath {
         for (const details of this.nodes) {
             // There can be multiple guards per node.
             for (const guard of details.guards) {
-                // Check whether the guard condition passes, and throw an exception if not.
+                // Check whether the guard Condition passes, and throw an exception if not.
                 if (!guard.isSatisfied(blackboard)) {
                     throw new GuardUnsatisifedException(details.node);
                 }

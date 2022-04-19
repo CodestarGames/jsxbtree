@@ -1,7 +1,7 @@
 import {Timer} from "./Timer";
 import {Node} from "./nodes/Node";
 import {Workflo} from "./workflo/workflo";
-import {NodeState} from "./nodeState";
+import {NodeState} from "./NodeState";
 import {GuardPath} from "./nodes/Guards/GuardUnsatisifedException";
 import {CompositeNode} from "./nodes/CompositeNode";
 

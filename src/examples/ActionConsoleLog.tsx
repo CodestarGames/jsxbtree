@@ -1,7 +1,7 @@
 import {Action} from "../nodes/Action";
 import {BTreeCallbackFn} from "../nodes/Decorators/BTreeAttribute";
 import {IBaseActionProps, wrapActionNode} from "../index";
-import {NodeState} from "../nodeState";
+import {NodeState} from "../NodeState";
 
 class ActConsoleLog extends Action {
     props: IConsoleLogParams;

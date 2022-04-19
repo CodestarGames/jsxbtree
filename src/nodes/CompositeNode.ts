@@ -1,6 +1,6 @@
 import {IDecoratorsFromJSXProps, Node} from "./Node";
 import Exit from "./CallBacks/Exit";
-import {NodeState} from "../nodeState";
+import {NodeState} from "../NodeState";
 
 export abstract class CompositeNode extends Node {
     constructor(public props) {
@@ -45,6 +45,6 @@ export abstract class CompositeNode extends Node {
 
 export interface ICompositeNodeParams extends IDecoratorsFromJSXProps {
      parentUid?;
-     children;
-     blackboard;
+     children?;
+     blackboard?;
 }

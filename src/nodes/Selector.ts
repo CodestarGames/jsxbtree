@@ -1,5 +1,5 @@
 import {CompositeNode} from "./CompositeNode";
-import {NodeState} from "../nodeState";
+import {NodeState} from "../NodeState";
 
 export class SelectorNode extends CompositeNode {
 
@@ -17,19 +17,19 @@ export class SelectorNode extends CompositeNode {
                 // This node is a 'SUCCEEDED' node.
                 this.setState(NodeState.SUCCEEDED);
 
-                // There is no need to check the rest of the selector 
+                // There is no need to check the rest of the Selector
                 return;
             }
 
             // If the current child has a state of 'FAILED' then we should move on to the next child.
             if (child.is(NodeState.FAILED)) {
-                // Find out if the current child is the last one in the selector.
+                // Find out if the current child is the last one in the Selector.
                 // If it is then this Sequence node has also failed.
                 if (this.children.indexOf(child) === this.children.length - 1) {
                     // This node is a 'FAILED' node.
                     this.setState(NodeState.FAILED);
 
-                    // There is no need to check the rest of the selector as we have completed it.
+                    // There is no need to check the rest of the Selector as we have completed it.
                     return;
                 } else {
                     // The child node failed, try the next one.
@@ -42,7 +42,7 @@ export class SelectorNode extends CompositeNode {
                 // This node is a 'RUNNING' node.
                 this.setState(NodeState.RUNNING);
 
-                // There is no need to check the rest of the selector as the current child is still running.
+                // There is no need to check the rest of the Selector as the current child is still running.
                 return;
             }
 

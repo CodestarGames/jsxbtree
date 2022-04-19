@@ -8,7 +8,7 @@ import AlwaysFail from "./Decorators/AlwaysFail";
 import Entry from "./CallBacks/Entry";
 import Step from "./CallBacks/Step";
 import Exit from "./CallBacks/Exit";
-import {NodeState} from "../nodeState";
+import {NodeState} from "../NodeState";
 
 export interface IDecoratorsFromJSXProps {
 
@@ -158,7 +158,7 @@ export abstract class Node implements INode {
                 stepDecorator.callExecutionFunc(this.blackboard);
             }
 
-            // Try to call the condition decorator, exit out if failed
+            // Try to call the Condition decorator, exit out if failed
             if (this.is(NodeState.READY)) {
                 const condDecorator: Cond = this.getDecorator<Cond>("cond");
 

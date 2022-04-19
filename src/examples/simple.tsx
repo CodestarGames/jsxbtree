@@ -1,31 +1,43 @@
-import jsx from '../'
+import jsx, {FunctionCall, Lotto, Parallel, Repeat, Selector, Sequence, Wait } from '../'
 import ActionConsoleLog from "./ActionConsoleLog";
 import {BTreeManager} from "../BTreeManager";
 
-function TestTree (props) {
-    return (
-        <selector {...props}>
-            <sequence while={(blackboard) => blackboard.timeout < 5000 }>
-                <wait duration={1000}/>
-                <functionCall fn={(bb) => { bb.timeout += 1000; }}/>
-            </sequence>
-            <TestBranch />
-        </selector>
-    )
-}
+export type BTreeBranch<T> = (props: {blackboard: T}) => BTree.Node;
+
+const TestTree: BTreeBranch<{test:number}> = (props) => (
+    <Selector {...props}>
+        <Sequence while={(blackboard) => blackboard.timeout < 5000} >
+            <Wait duration={1000}/>
+            <FunctionCall fn={(bb) => {
+                bb.timeout += 1000;
+            }}/>
+        </Sequence>
+        <TestBranch/>
+    </Selector>
+);
 
 
 function TestBranch(props) {
     return (
-        <sequence {...props}>
-            <wait duration={1000}/>
-            <selector>
-                <sequence alwaysFail={true}>
+        <Sequence {...props}>
+            <Wait duration={1000}/>
+            <Selector>
+                <Sequence alwaysFail={true}>
                     <ActionConsoleLog txt={'test succeed/fail decorator'}/>
-                </sequence>
+                </Sequence>
                 <ActionConsoleLog txt={'we failed!'}/>
-            </selector>
-        </sequence>
+            </Selector>
+            <Repeat iterations={2}>
+                <Parallel>
+                    <ActionConsoleLog txt={'called in parallel 1'}/>
+                    <ActionConsoleLog txt={'called in parallel 2'}/>
+                </Parallel>
+            </Repeat>
+            <Lotto>
+                <ActionConsoleLog txt={'rand choice in lotto 1'}/>
+                <ActionConsoleLog txt={'rand choice in lotto 2'}/>
+            </Lotto>
+        </Sequence>
     )
 }
 

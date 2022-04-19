@@ -1,9 +1,9 @@
 import {LeafNode} from "./LeafNode";
 import {BTreeCallbackFn} from "./Decorators/BTreeAttribute";
 import {IBaseActionProps} from "../index";
-import {NodeState} from "../nodeState";
+import {NodeState} from "../NodeState";
 
-export class FunctionCall extends LeafNode {
+export class FunctionCallNode extends LeafNode {
 
     constructor(readonly props: IFunctionCallProps) {
         super(props);

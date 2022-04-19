@@ -2,8 +2,8 @@
 import {BTreeAttribute, BTreeGuardFn} from "../Decorators/BTreeAttribute";
 
 /**
- * An While guard which is satisfied as long as the given condition remains true.
- * @param condition The name of the condition function that determines whether the guard is satisfied.
+ * An While guard which is satisfied as long as the given Condition remains true.
+ * @param Condition The name of the Condition function that determines whether the guard is satisfied.
  */
 export default class While extends BTreeAttribute {
 
@@ -21,7 +21,7 @@ export default class While extends BTreeAttribute {
     getDetails = () => ({condition:this.condition?.name || 'anonymous', type: this.getType()});
 
     /**
-     * Gets the condition of the guard.
+     * Gets the Condition of the guard.
      */
     getCondition = () => this.condition;
 

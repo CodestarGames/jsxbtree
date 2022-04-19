@@ -1,6 +1,6 @@
 import {CompositeNode} from "./CompositeNode";
 import {Node} from "./Node";
-import {NodeState} from "../nodeState";
+import {NodeState} from "../NodeState";
 
 export class LottoNode extends CompositeNode {
 
@@ -20,7 +20,7 @@ export class LottoNode extends CompositeNode {
             this.winningChild.update();
         }
 
-        // The state of the lotto node is the state of its winning child.
+        // The state of the Lotto node is the state of its winning child.
         this.setState(this.winningChild.state);
     }
 

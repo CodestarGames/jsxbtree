@@ -1,4 +1,4 @@
-import jsx, {cloneChildren, Fragment, IBaseActionProps} from '../'
+import jsx, {cloneChildren, IBaseActionProps, Sequence} from '../'
 import ActionConsoleLog from "./ActionConsoleLog";
 import {Node} from "../nodes/Node";
 import {BTreeManager} from "../BTreeManager";
@@ -32,11 +32,11 @@ function GameplaySequenceTemplate(props: IGameLoopSlots) {
     let _gps = processSlot(gamePlaySlot);
     let _os = processSlot(outroSlot);
     return (
-        <sequence {...props}>
+        <Sequence {...props}>
             { _is && cloneChildren(_is, Object.assign({}, props))[0] }
             { _gps && cloneChildren(_gps, Object.assign({}, props))[0] }
             { _os && cloneChildren(_os, Object.assign({}, props))[0] }
-        </sequence>
+        </Sequence>
     )
 }
 

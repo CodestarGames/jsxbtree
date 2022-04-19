@@ -1,4 +1,4 @@
-import {NodeState} from "../nodeState";
+import {NodeState} from "../NodeState";
 
 export abstract class Action {
 
