@@ -2,9 +2,7 @@ import jsx, {FunctionCall, Lotto, Parallel, Repeat, Selector, Sequence, Wait } f
 import ActionConsoleLog from "./ActionConsoleLog";
 import {BTreeManager} from "../BTreeManager";
 
-export type BTreeBranch<T> = (props: {blackboard: T}) => BTree.Node;
-
-const TestTree: BTreeBranch<{test:number}> = (props) => (
+const TestTree = (props) => (
     <Selector {...props}>
         <Sequence while={(blackboard) => blackboard.timeout < 5000} >
             <Wait duration={1000}/>
@@ -64,3 +62,4 @@ const main = () => {
 }
 
 main();
+

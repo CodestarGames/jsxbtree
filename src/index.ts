@@ -67,16 +67,22 @@ const wrapActionNode = (ctor, props) => {
     return execActionNode;
 }
 
+type omitUnion = "children" | "parentUid"|"blackboard"
+type CompositeAttrParams = Omit<ICompositeNodeParams, omitUnion>;
+type RepeatAttrParams = Omit<IRepeatParams, omitUnion>;
+type WaitAttrParams = Omit<IWaitParams, omitUnion>;
+type ConditionAttrParams = Omit<IConditionParams, omitUnion>;
+type FunctionCallAttrParams = Omit<IFunctionCallProps, omitUnion>;
 
-    const Parallel = (attributes: ICompositeNodeParams, children) => wrapCompositeNode<ParallelNode>(attributes, children, ParallelNode);
-    const Lotto = (attributes: ICompositeNodeParams, children) => wrapCompositeNode<LottoNode>(attributes, children, LottoNode);
-    const Selector = (attributes: ICompositeNodeParams, children) => wrapCompositeNode<SelectorNode>(attributes, children, SelectorNode);
-    const Sequence = (attributes: ICompositeNodeParams, children) => wrapCompositeNode<SequenceNode>(attributes, children, SequenceNode);
-    const Repeat = (attributes: IRepeatParams, children) => wrapCompositeNode<RepeatNode>(attributes ?? {} as IRepeatParams, children, RepeatNode);
+const Parallel = (attributes: CompositeAttrParams, children) => wrapCompositeNode<ParallelNode>(attributes, children, ParallelNode);
+const Lotto = (attributes: CompositeAttrParams, children) => wrapCompositeNode<LottoNode>(attributes, children, LottoNode);
+const Selector = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SelectorNode>(attributes, children, SelectorNode);
+const Sequence = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SequenceNode>(attributes, children, SequenceNode);
+const Repeat = (attributes: RepeatAttrParams, children) => wrapCompositeNode<RepeatNode>(attributes ?? {} as IRepeatParams, children, RepeatNode);
 
-    const Wait = (attributes : IWaitParams) => wrapLeafNode<WaitNode>(attributes, WaitNode);
-    const Condition = (attributes: IConditionParams) => wrapLeafNode<ConditionNode>(attributes ?? {} as IConditionParams, ConditionNode);
-    const FunctionCall = (attributes: IFunctionCallProps) => wrapLeafNode<FunctionCallNode>(attributes, FunctionCallNode);
+const Wait = (attributes : WaitAttrParams) => wrapLeafNode<WaitNode>(attributes, WaitNode);
+const Condition = (attributes: ConditionAttrParams) => wrapLeafNode<ConditionNode>(attributes ?? {} as IConditionParams, ConditionNode);
+const FunctionCall = (attributes: FunctionCallAttrParams) => wrapLeafNode<FunctionCallNode>(attributes, FunctionCallNode);
 
 //
 // function jsx<T extends Node>(kind: T, attributes: { [key: string]: any } | null, ...children)

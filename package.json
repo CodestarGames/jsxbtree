@@ -2,8 +2,14 @@
   "name": "jsxbtree",
   "version": "1.0.0",
   "description": "This is a JSX based behavior tree library for JS/TypeScript",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "url": "git@github.com:CodestarGames/jsxbtree.git"
+  },
   "scripts": {
+    "prepublish": "tsc",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
