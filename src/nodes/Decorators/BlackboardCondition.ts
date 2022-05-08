@@ -1,7 +1,8 @@
-import {BTreeAttribute, BTreeGuardFn} from "./BTreeAttribute";
+import {Decorator, BTreeGuardFn} from "./Decorator";
+import {Stops} from "../../Stops";
 
-export default class Cond extends BTreeAttribute {
-    constructor(public conditionFunc: BTreeGuardFn) {
+export default class BlackboardCondition extends Decorator {
+    constructor(public conditionFunc: BTreeGuardFn, Stops: Stops) {
         super();
     }
 

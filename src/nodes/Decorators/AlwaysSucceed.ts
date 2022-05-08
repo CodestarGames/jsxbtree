@@ -1,6 +1,6 @@
-import {BTreeAttribute} from "./BTreeAttribute";
+import {Decorator} from "./Decorator";
 
-export default class AlwaysSucceed extends BTreeAttribute {
+export default class AlwaysSucceed extends Decorator {
 
     constructor(succeed: boolean) {
         super();

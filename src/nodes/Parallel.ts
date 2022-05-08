@@ -11,7 +11,7 @@ export class ParallelNode extends CompositeNode {
 
         // Iterate over all of the children of this node.
         for (const child of this.children) {
-            // If the child has never been updated or is running then we will need to update it now.
+            // If the child has never been updated or is running then we will need to updateState it now.
             if (child.is(NodeState.READY) || child.is(NodeState.RUNNING)) {
                 // Update the child of this node.
                 child.update();

@@ -18,7 +18,7 @@ export class RepeatNode extends CompositeNode {
      * The node has a single child which can have:
      * -- A number of iterations for which to Repeat the child node.
      * -- An infinite Repeat loop if neither an iteration count or a Condition function is defined.
-     * The REPEAT node will stop and have a 'FAILED' state if its child is ever in a 'FAILED' state after an update.
+     * The REPEAT node will stop and have a 'FAILED' state if its child is ever in a 'FAILED' state after an updateState.
      * The REPEAT node will attempt to move on to the next iteration if its child is ever in a 'SUCCEEDED' state.
      * @param props
      */

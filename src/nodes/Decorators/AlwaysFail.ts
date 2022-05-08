@@ -1,6 +1,6 @@
-import {BTreeAttribute} from "./BTreeAttribute";
+import {Decorator} from "./Decorator";
 
-export default class AlwaysFail extends BTreeAttribute {
+export default class AlwaysFail extends Decorator {
 
     constructor(succeed: boolean) {
         super();

@@ -1,26 +1,18 @@
-import {GuardPath, GuardUnsatisifedException} from "./Guards/GuardUnsatisifedException";
-import {BTreeAttribute, BTreeCallbackFn, BTreeGuardFn} from "./Decorators/BTreeAttribute";
-import While from "./Guards/While";
-import Until from "./Guards/Until";
-import Cond from "./Decorators/Cond";
+
+import {Decorator, BTreeCallbackFn, BTreeGuardFn} from "./Decorators/Decorator";
+import BlackboardCondition from "./Decorators/BlackboardCondition";
 import AlwaysSucceed from "./Decorators/AlwaysSucceed";
 import AlwaysFail from "./Decorators/AlwaysFail";
-import Entry from "./CallBacks/Entry";
-import Step from "./CallBacks/Step";
-import Exit from "./CallBacks/Exit";
 import {NodeState} from "../NodeState";
+import {GuardPath} from "./Decorators/Guards/GuardUnsatisifedException";
+import Entry from "./Decorators/CallBacks/Entry";
+import Step from "./Decorators/CallBacks/Step";
+import Exit from "./Decorators/CallBacks/Exit";
+import While from "./Decorators/Guards/While";
+import Until from "./Decorators/Guards/Until";
 
 export interface IDecoratorsFromJSXProps {
-
-        while?: BTreeGuardFn;
-        until?: BTreeGuardFn;
-        entry?: BTreeCallbackFn;
-        step?: BTreeCallbackFn;
-        exit?: BTreeCallbackFn;
-        cond?: BTreeGuardFn;
-        alwaysSucceed?: any;
-        alwaysFail?: any;
-
+    decorators?: Decorator[] | Decorator;
 }
 
 export interface INode {
@@ -39,7 +31,7 @@ export abstract class Node implements INode {
          */
         this.state = NodeState.READY;
         /**
-         * The guard path to evaluate as part of a node update.
+         * The guard path to evaluate as part of a node updateState.
          */
         this.guardPath = null;
 
@@ -66,7 +58,6 @@ export abstract class Node implements INode {
         return convertNodeStateToString(this.state);
     }
 
-
     get guardPath(): GuardPath {
         return this._guardPath;
     }
@@ -75,17 +66,24 @@ export abstract class Node implements INode {
         this._guardPath = value;
     }
 
-    _decorators: BTreeAttribute[] = [];
+    _decorators: Decorator[] = [];
     _guardPath: GuardPath;
 
-    get decorators(): BTreeAttribute[] {
+    get decorators(): Decorator[] {
         return this._decorators;
     }
 
-    set decorators(value: BTreeAttribute[]) {
-        this._decorators = value;
+    set decorators(value) {
+        if(Array.isArray(value))
+            this._decorators = value;
+        else
+            this._decorators = [value];
     }
 
+
+    getCallback<T>(type): T {
+        return (this.decorators.find((decorator) => decorator.getType().toUpperCase() === type.toUpperCase()) as unknown as T);
+    }
 
     getDecorator<T>(type): T {
         return (this.decorators.find((decorator) => decorator.getType().toUpperCase() === type.toUpperCase()) as unknown as T);
@@ -142,7 +140,7 @@ export abstract class Node implements INode {
 
             // If this node is in the READY NodeState then call the ENTRY decorator for this node if it exists.
             if (this.is(NodeState.READY)) {
-                const entryDecorator: Entry = this.getDecorator<Entry>("entry");
+                const entryDecorator: Entry = this.getCallback<Entry>("entry");
 
                 // Call the entry decorator function if it exists.
                 if (entryDecorator) {
@@ -151,16 +149,16 @@ export abstract class Node implements INode {
             }
 
             // Try to get the step decorator for this node.
-            const stepDecorator: Step = this.getDecorator<Step>("step");
+            const stepDecorator: Step = this.getCallback<Step>("step");
 
             // Call the step decorator function if it exists.
             if (stepDecorator) {
                 stepDecorator.callExecutionFunc(this.blackboard);
             }
 
-            // Try to call the Condition decorator, exit out if failed
+            // Try to call the Condition decorator, exitState out if failed
             if (this.is(NodeState.READY)) {
-                const condDecorator: Cond = this.getDecorator<Cond>("cond");
+                const condDecorator: BlackboardCondition = this.getCallback<BlackboardCondition>("cond");
 
                 // Call the cond decorator function if it exists.
                 if (condDecorator) {
@@ -173,7 +171,7 @@ export abstract class Node implements INode {
             }
 
 
-            // Do the actual update.
+            // Do the actual updateState.
             this.onUpdate();
 
             // The state of this node will depend in the state of its child.
@@ -193,16 +191,16 @@ export abstract class Node implements INode {
 
             // If this node is now in a 'SUCCEEDED' or 'FAILED' NodeState then call the EXIT decorator for this node if it exists.
             if (this.is(NodeState.SUCCEEDED) || this.is(NodeState.FAILED)) {
-                const exitDecorator: Exit = this.getDecorator<Exit>("exit");
+                const exitDecorator: Exit = this.getCallback<Exit>("exit");
 
-                // Call the exit decorator function if it exists.
+                // Call the exitState decorator function if it exists.
                 if (exitDecorator) {
                     exitDecorator.callExecutionFunc(this.blackboard);
                 }
             }
         } catch (error) {
             // If the error is a GuardUnsatisfiedException then we need to determine if this node is the source.
-            if (error instanceof GuardUnsatisifedException && error.isSourceNode(this)) {
+            if (error.constructor.name === 'GuardUnsatisifedException' && error.isSourceNode(this)) {
                 // Abort the current node.
                 this.abort();
 
@@ -223,10 +221,10 @@ export abstract class Node implements INode {
         // Reset the state of this node.
         this.reset();
 
-        // Try to get the exit decorator for this node.
-        const exitDecorator: Exit = this.getDecorator<Exit>("exit");
+        // Try to get the exitState decorator for this node.
+        const exitDecorator: Exit = this.getCallback<Exit>("exit");
 
-        // Call the exit decorator function if it exists.
+        // Call the exitState decorator function if it exists.
         if (exitDecorator) {
             exitDecorator.callExecutionFunc(this.blackboard);
         }
@@ -269,39 +267,6 @@ export abstract class Node implements INode {
                 this.setState(NodeState.READY);
         }
     }
-}
-
-export function createDecoratorsFromProps(props: IDecoratorsFromJSXProps): BTreeAttribute[] {
-    let decoratorsList : BTreeAttribute[] = [];
-    for (let propsKey in props) {
-        switch(propsKey) {
-            case 'while':
-                decoratorsList.push(new While(props[propsKey]))
-                break;
-            case 'until':
-                decoratorsList.push(new Until(props[propsKey]))
-                break;
-            case 'entry':
-                decoratorsList.push(new Entry(props[propsKey]))
-                break;
-            case 'step':
-                decoratorsList.push(new Step(props[propsKey]))
-                break;
-            case 'exit':
-                decoratorsList.push(new Exit(props[propsKey]))
-                break;
-            case 'cond':
-                decoratorsList.push(new Cond(props[propsKey]))
-                break;
-            case 'alwaysSucceed':
-                decoratorsList.push(new AlwaysSucceed(props[propsKey]))
-                break;
-            case 'alwaysFail':
-                decoratorsList.push(new AlwaysFail(props[propsKey]))
-                break;
-        }
-    }
-    return decoratorsList;
 }
 
 /**

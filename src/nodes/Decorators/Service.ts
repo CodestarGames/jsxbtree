@@ -1,7 +1,7 @@
-import {BTreeAttribute, BTreeCallbackFn} from "../Decorators/BTreeAttribute";
+import {BTreeCallbackFn, Decorator} from "./Decorator";
 
-export default class Step extends BTreeAttribute {
-    constructor(public executionFunc: BTreeCallbackFn) {
+export default class Service extends Decorator {
+    constructor(public interval: number, public executionFunc: BTreeCallbackFn) {
         super();
     }
 

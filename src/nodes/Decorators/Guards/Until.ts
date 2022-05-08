@@ -1,13 +1,12 @@
-
-import {BTreeAttribute, BTreeGuardFn} from "../Decorators/BTreeAttribute";
-
 /**
- * An While guard which is satisfied as long as the given Condition remains true.
+ * An UNTIL guard which is satisfied as long as the given Condition remains false.
  * @param Condition The name of the Condition function that determines whether the guard is satisfied.
  */
-export default class While extends BTreeAttribute {
+import {Decorator} from "../Decorator";
 
-    constructor(condition: BTreeGuardFn | undefined) {
+export default class Until extends Decorator {
+
+    constructor(condition) {
         super();
         this.condition = condition;
     }
@@ -18,7 +17,7 @@ export default class While extends BTreeAttribute {
     isGuard = () => true;
     readonly condition: any;
 
-    getDetails = () => ({condition:this.condition?.name || 'anonymous', type: this.getType()});
+    getDetails = () => ({condition: this.condition?.name || 'anonymous', type: this.getType()});
 
     /**
      * Gets the Condition of the guard.
@@ -31,9 +30,8 @@ export default class While extends BTreeAttribute {
      * @param blackboard The board.
      * @returns Whether the guard is satisfied.
      */
-    isSatisfied = (blackboard: any): boolean => {
-
-        return this.condition(blackboard) === true
+    isSatisfied = (blackboard) : boolean => {
+       return this.condition(blackboard) === false
     };
 
 }

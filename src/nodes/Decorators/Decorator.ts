@@ -2,7 +2,7 @@
  * A base node decorator.
  * @param type The node decorator type.
  */
-export abstract class BTreeAttribute {
+export abstract class Decorator {
 
     /**
      * Gets the type of the node.

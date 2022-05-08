@@ -1,6 +1,6 @@
-import {BTreeAttribute, BTreeCallbackFn} from "../Decorators/BTreeAttribute";
+import {BTreeCallbackFn, Decorator} from "../Decorator";
 
-export default class Entry extends BTreeAttribute {
+export default class Exit extends Decorator {
     constructor(public executionFunc: BTreeCallbackFn) {
         super();
     }

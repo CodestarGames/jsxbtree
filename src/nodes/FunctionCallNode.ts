@@ -1,5 +1,5 @@
 import {LeafNode} from "./LeafNode";
-import {BTreeCallbackFn} from "./Decorators/BTreeAttribute";
+import {BTreeCallbackFn} from "./Decorators/Decorator";
 import {IBaseActionProps} from "../index";
 import {NodeState} from "../NodeState";
 
