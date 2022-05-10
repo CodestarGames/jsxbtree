@@ -11,9 +11,9 @@ export class WaitNode extends LeafNode {
 
     onUpdate() {
 
-        // If this node is in the READY state then we need to set the initial update time.
+        // If this node is in the READY state then we need to set the initial updateState time.
         if (this.is(NodeState.READY) || this.initialUpdateTime === null) {
-            // Set the initial update time.
+            // Set the initial updateState time.
             this.initialUpdateTime = new Date().getTime();
 
             // The node is now running until we finish waiting.

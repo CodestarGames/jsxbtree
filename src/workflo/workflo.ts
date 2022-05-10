@@ -180,6 +180,13 @@ export class Workflo {
 		this._populateRootNodeContainer();
 	}
 
+	update(window, data) {
+		data.forEach(item => {
+			let elem = window.document.getElementById(item.id);
+			elem.setAttribute('class', `tree-view-node ${item.state}`)
+		})
+	}
+
 	/**
 	 * Destroy this getInstance.
 	 */

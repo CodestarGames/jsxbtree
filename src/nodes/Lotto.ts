@@ -15,7 +15,7 @@ export class LottoNode extends CompositeNode {
         if (this.is(NodeState.READY) || !this.winningChild) {
             this.winningChild = this.children[Math.floor(Math.random() * this.children.length)]
         }
-        // If the winning child has never been updated or is running then we will need to update it now.
+        // If the winning child has never been updated or is running then we will need to updateState it now.
         if (this.winningChild.is(NodeState.READY) || this.winningChild.is(NodeState.RUNNING)) {
             this.winningChild.update();
         }

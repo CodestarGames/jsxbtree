@@ -15,6 +15,9 @@ import {LeafNode} from "./nodes/LeafNode";
 import {Action} from "./nodes/Action";
 import {NodeState} from "./NodeState";
 import {BTreeManager} from "./BTreeManager";
+import { BTreeCallbackFn } from "./nodes/Decorators/BTreeAttribute";
+import {ActiveSelectorNode} from "./nodes/ActiveSelectorNode";
+import {RandomSequenceNode} from "./nodes/RandomSequenceNode";
 
 
 //JSX specific functions
@@ -77,7 +80,9 @@ type FunctionCallAttrParams = Omit<IFunctionCallProps, omitUnion>;
 const Parallel = (attributes: CompositeAttrParams, children) => wrapCompositeNode<ParallelNode>(attributes, children, ParallelNode);
 const Lotto = (attributes: CompositeAttrParams, children) => wrapCompositeNode<LottoNode>(attributes, children, LottoNode);
 const Selector = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SelectorNode>(attributes, children, SelectorNode);
+const ActiveSelector = (attributes: CompositeAttrParams, children) => wrapCompositeNode<ActiveSelectorNode>(attributes, children, ActiveSelectorNode);
 const Sequence = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SequenceNode>(attributes, children, SequenceNode);
+const RandomSequence = (attributes: CompositeAttrParams, children) => wrapCompositeNode<RandomSequenceNode>(attributes, children, RandomSequenceNode);
 const Repeat = (attributes: RepeatAttrParams, children) => wrapCompositeNode<RepeatNode>(attributes ?? {} as IRepeatParams, children, RepeatNode);
 
 const Wait = (attributes : WaitAttrParams) => wrapLeafNode<WaitNode>(attributes, WaitNode);
@@ -88,10 +93,9 @@ const FunctionCall = (attributes: FunctionCallAttrParams) => wrapLeafNode<Functi
 // function jsx<T extends Node>(kind: T, attributes: { [key: string]: any } | null, ...children)
 function jsx(kind: JSX.Component, attributes: { [key: string]: any } | null, ...children) {
 
-    if (typeof kind === 'function') {
-        let branchName = kind.name.indexOf('Act') > -1 ? undefined : kind.name;
-        return kind({...attributes, branchName, children } ?? {branchName }, children);
-    }
+    let branchName = kind.name.indexOf('Act') > -1 ? undefined : kind.name;
+    return kind({...attributes, branchName, children } ?? {branchName }, children);
+
 
 }
 
@@ -116,12 +120,15 @@ export {
     wrapCompositeNode,
     wrapActionNode,
     IBaseActionProps,
+    BTreeCallbackFn,
 
     Wait,
     Lotto,
     Parallel,
     Selector,
+    ActiveSelector,
     Sequence,
+    RandomSequence,
     Repeat,
     Condition,
     FunctionCall

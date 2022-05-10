@@ -39,7 +39,7 @@ export abstract class Node implements INode {
          */
         this.state = NodeState.READY;
         /**
-         * The guard path to evaluate as part of a node update.
+         * The guard path to evaluate as part of a node updateState.
          */
         this.guardPath = null;
 
@@ -158,7 +158,7 @@ export abstract class Node implements INode {
                 stepDecorator.callExecutionFunc(this.blackboard);
             }
 
-            // Try to call the Condition decorator, exit out if failed
+            // Try to call the Condition decorator, exitState out if failed
             if (this.is(NodeState.READY)) {
                 const condDecorator: Cond = this.getDecorator<Cond>("cond");
 
@@ -173,7 +173,7 @@ export abstract class Node implements INode {
             }
 
 
-            // Do the actual update.
+            // Do the actual updateState.
             this.onUpdate();
 
             // The state of this node will depend in the state of its child.
@@ -195,14 +195,14 @@ export abstract class Node implements INode {
             if (this.is(NodeState.SUCCEEDED) || this.is(NodeState.FAILED)) {
                 const exitDecorator: Exit = this.getDecorator<Exit>("exit");
 
-                // Call the exit decorator function if it exists.
+                // Call the exitState decorator function if it exists.
                 if (exitDecorator) {
                     exitDecorator.callExecutionFunc(this.blackboard);
                 }
             }
         } catch (error) {
             // If the error is a GuardUnsatisfiedException then we need to determine if this node is the source.
-            if (error instanceof GuardUnsatisifedException && error.isSourceNode(this)) {
+            if (error.constructor.name === 'GuardUnsatisifedException' && error.isSourceNode(this)) {
                 // Abort the current node.
                 this.abort();
 
@@ -223,10 +223,10 @@ export abstract class Node implements INode {
         // Reset the state of this node.
         this.reset();
 
-        // Try to get the exit decorator for this node.
+        // Try to get the exitState decorator for this node.
         const exitDecorator: Exit = this.getDecorator<Exit>("exit");
 
-        // Call the exit decorator function if it exists.
+        // Call the exitState decorator function if it exists.
         if (exitDecorator) {
             exitDecorator.callExecutionFunc(this.blackboard);
         }

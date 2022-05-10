@@ -19,7 +19,7 @@ export class ActionNodeBase extends LeafNode {
         // Reset the state of this node.
         this.setState(NodeState.READY);
 
-        // There is no longer an update promise that we care about.
+        // There is no longer an updateState promise that we care about.
         this.isUsingUpdatePromise = false;
         this.updatePromiseStateResult = null;
     }
@@ -27,10 +27,10 @@ export class ActionNodeBase extends LeafNode {
     onUpdate() {
 
 
-        // If the result of this action depends on an update promise then there is nothing to do until
-        // it resolves, unless there has been a value set as a result of the update promise resolving.
+        // If the result of this action depends on an updateState promise then there is nothing to do until
+        // it resolves, unless there has been a value set as a result of the updateState promise resolving.
         if (this.isUsingUpdatePromise) {
-            // Check whether the update promise has resolved with a state value.
+            // Check whether the updateState promise has resolved with a state value.
             if (this.updatePromiseStateResult) {
 
                 // Set the state of this node to match the state returned by the promise.
@@ -43,7 +43,7 @@ export class ActionNodeBase extends LeafNode {
         // Validate the action.
         // this._validateAction(action);
 
-        // Call the action 'onUpdate' function, the result of which may be:
+        // Call the action 'update' function, the result of which may be:
         // - The finished state of this action node.
         // - A promise to return a finished node state.
         // - Undefined if the node should remain in the running state.
@@ -80,7 +80,7 @@ export class ActionNodeBase extends LeafNode {
                         return;
                     }
 
-                    // Set pending update promise state result to be processed on next update.
+                    // Set pending updateState promise state result to be processed on next updateState.
                     this.updatePromiseStateResult = NodeState.SUCCEEDED;
 
                     /////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ export class ActionNodeBase extends LeafNode {
                         return;
                     }
 
-                    // Set pending update promise state result to be processed on next update.
+                    // Set pending updateState promise state result to be processed on next updateState.
                     this.updatePromiseStateResult = result;
                 },
                 (reason) => {
@@ -118,7 +118,7 @@ export class ActionNodeBase extends LeafNode {
                 }
             );
 
-            // This node will be in the 'RUNNING' state until the update promise resolves.
+            // This node will be in the 'RUNNING' state until the updateState promise resolves.
             this.setState(NodeState.RUNNING);
 
             // We are now waiting for the promise returned by the use to resolve before we know what state this node is in.

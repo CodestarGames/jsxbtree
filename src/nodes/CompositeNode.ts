@@ -21,10 +21,10 @@ export abstract class CompositeNode extends Node {
         // Reset the state of this node.
         this.reset();
 
-        // Try to get the exit decorator for this node.
+        // Try to get the exitState decorator for this node.
         const exitDecorator: Exit = this.getDecorator<Exit>("exit");
 
-        // Call the exit decorator function if it exists.
+        // Call the exitState decorator function if it exists.
         if (exitDecorator) {
             exitDecorator.callExecutionFunc(this.blackboard);
         }

@@ -5,8 +5,14 @@ import {NodeState} from "./NodeState";
 import {GuardPath} from "./nodes/Guards/GuardUnsatisifedException";
 import {CompositeNode} from "./nodes/CompositeNode";
 
+interface ITreeData {
+    tree: BTree.Node,
+    tick: number,
+    timerId: number
+}
+
 export class BTreeManager {
-    private trees: Map<number, BTree.Node>
+    private trees: Map<string, ITreeData>
     private timer: Timer;
     private static _instance: BTreeManager;
     private nodeMap: Map<string, Node>;
@@ -18,7 +24,7 @@ export class BTreeManager {
     private constructor() {
         this.timer = Timer.getInstance();
         this.nodeMap = new Map<string, Node>();
-        this.trees = new Map<number, BTree.Node>();
+        this.trees = new Map<string, ITreeData>();
         this._treeGeneratorTasks = new Map<Node, Array<any>>();
         this.currentGenerators = new Map<string, any>();
         this.broadcastChannel = new BroadcastChannel('tree-debug');
@@ -32,15 +38,18 @@ export class BTreeManager {
         return this._instance;
     }
 
-    start(Tree: (props: any) => BTree.Node, tick: number, blackboard: any) {
+    start(Tree: (props: any) => BTree.Node, tick: number = -1, blackboard: any) {
         let treeInst = Tree({blackboard});
 
         this._applyLeafNodeGuardPaths(treeInst);
         this._treeGeneratorTasks.set(treeInst, [...treeInst.children]);
         this.broadcastChannel = new BroadcastChannel('tree-debug');
 
-        let timerId = this.timer.addTimer(() => this.onTickUpdate(treeInst), tick, -1);
-        this.trees.set(timerId, treeInst);
+        let timerId;
+        if(tick !== -1)
+            timerId = this.timer.addTimer(() => this.onTickUpdate(treeInst), tick, -1);
+
+        this.trees.set(treeInst.uid, {tree: treeInst, tick, timerId});
 
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('debugTree')) {
@@ -64,6 +73,7 @@ export class BTreeManager {
     }
 
     private* processTick(tree): IterableIterator<NodeState> {
+
         while (true) {
 
             let generatorTasks = this._treeGeneratorTasks.get(tree);
@@ -89,6 +99,14 @@ export class BTreeManager {
     }
 
     update(dt) {
+
+        //updateState any trees that aren't on a specified tick.
+        this.trees.forEach((value) => {
+            if(value.tick === -1){
+                this.onTickUpdate(value.tree);
+            }
+        });
+
         this.timer.update(dt);
     }
 
@@ -238,7 +256,7 @@ export class BTreeManager {
                                 <i class='tree-view-caption'>${decorator.type.toUpperCase()} ${decorator.condition || decorator.executionFunc || ''}</i>`;
                                         }).join("");
 
-                                    return `<div class='tree-view-node ${node.item.state}'>
+                                    return `<div id="${node.item.id}" class='tree-view-node ${node.item.state}'>
                             <div class='tree-view-icon tree-view-icon-${node.item.type}'>
                            
                             </div>
@@ -248,7 +266,7 @@ export class BTreeManager {
                             </div>
                             </div>`;
                                 } else {
-                                    return `<div class='tree-view-node ${node.item.state}'>
+                                    return `<div id="${node.item.id}" class='tree-view-node" ${node.item.state}'>
                             <div class='tree-view-icon tree-view-icon-${node.item.type}'>
                             </div>
                             <div><p class='tree-view-caption'>${node.item.caption}</p></div>
@@ -275,7 +293,7 @@ export class BTreeManager {
                     newWindow.workFlo = new Workflo(newWindow.document.getElementById('loopVisualizer'), options);
                 } else {
                     // @ts-ignore
-                    newWindow.workFlo.refresh(nodes);
+                    newWindow.workFlo.update(newWindow, nodes);
                 }
 
             }
