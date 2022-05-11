@@ -1,12 +1,18 @@
 import {LeafNode} from "../nodes/LeafNode";
 import {NodeState} from "../NodeState";
 
-export class ActionNodeBase extends LeafNode {
+
+
+export class ActionNode extends LeafNode {
     private updatePromiseStateResult: any;
     private isUsingUpdatePromise: boolean;
+    waitForCompletion: boolean;
+    onComplete: () => void;
 
-    constructor(readonly ctor, readonly props) {
+    constructor(readonly wrapperFn: (node: ActionNode) => boolean | NodeState, readonly props, options?: { waitForCompletion, onComplete }) {
         super(props);
+        this.waitForCompletion = options?.waitForCompletion || false;
+        this.onComplete = options?.onComplete || (() => {});
     }
 
     getCaption(): string {
@@ -40,34 +46,12 @@ export class ActionNodeBase extends LeafNode {
             return;
         }
 
-        // Validate the action.
-        // this._validateAction(action);
-
-        // Call the action 'update' function, the result of which may be:
-        // - The finished state of this action node.
-        // - A promise to return a finished node state.
-        // - Undefined if the node should remain in the running state.
-        let Action = new this.ctor();
-        Action.props = this.props;
-        Action.blackboard = this.blackboard;
-        // let gameObject = this.props.gameObject;
-        //
-        // if (typeof (this.props.gameObject) === 'function') {
-        //     gameObject = this.props.gameObject(this.scene.bTreeManager.gameState, this.scene);
-        // }
-        //
-        // Action.bind(this.props, gameObject, this.scene);
-
-        // if ((Action.interruptible instanceof Function && Action.interruptible()) || Action.interruptible === true) {
-        //     this.scene.events.once('on-interrupt', Action.onInterrupt, Action);
-        // }
-
 
         let updateResult;
-        if (Action.waitForCompletion === true) {
+        if (this.waitForCompletion === true) {
             updateResult = new Promise<any>(resolve => {
 
-                Action.onComplete = () => {
+                this.onComplete = () => {
 
                     //NOTE: THIS IS A NON-IDEAL FIX, COME BACK TO THIS LATER.
                     //////////////////////////////////////////////////////////
@@ -87,11 +71,12 @@ export class ActionNodeBase extends LeafNode {
 
                     //resolve(NodeState.SUCCEEDED);
                 };
-                Action.perform();
+
+                updateResult = this.wrapperFn(this);
 
             });
         } else {
-            updateResult = Action.perform();
+            updateResult = this.wrapperFn(this);
         }
 
 
@@ -127,6 +112,9 @@ export class ActionNodeBase extends LeafNode {
             // Validate the returned value.
             this._validateUpdateResult(updateResult);
 
+            if(typeof updateResult === 'boolean')
+                updateResult = updateResult === true ? NodeState.SUCCEEDED : NodeState.FAILED;
+
             // Set the state of this node, this may be undefined, which just means that the node is still in the 'RUNNING' state.
             this.setState(updateResult || NodeState.RUNNING);
         }
@@ -136,7 +124,8 @@ export class ActionNodeBase extends LeafNode {
         switch (result) {
             case NodeState.SUCCEEDED:
             case NodeState.FAILED:
-            case undefined:
+            case true:
+            case false:
                 return;
             default:
                 throw `action '${'test'}' 'onUpdate' returned an invalid response, expected an optional State.SUCCEEDED or State.FAILED value to be returned`;

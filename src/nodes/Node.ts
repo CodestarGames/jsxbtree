@@ -103,7 +103,7 @@ export abstract class Node implements INode {
     state: NodeState;
 
     is(value: NodeState) {
-        return this.state === value;
+        return this.state.done === value.done && this.state.succeeded === value.succeeded;
     }
 
     setState(val: NodeState) {

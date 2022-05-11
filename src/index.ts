@@ -9,10 +9,9 @@ import {LottoNode} from "./nodes/Lotto";
 import {SelectorNode} from "./nodes/Selector";
 import {SequenceNode} from "./nodes/Sequence";
 import {IRepeatParams, RepeatNode} from "./nodes/Repeat";
-import {ActionNodeBase} from "./nodes/ActionNodeBase";
+import {ActionNode} from "./nodes/ActionNode";
 import {createDecoratorsFromProps, IDecoratorsFromJSXProps, Node} from "./nodes/Node";
 import {LeafNode} from "./nodes/LeafNode";
-import {Action} from "./nodes/Action";
 import {NodeState} from "./NodeState";
 import {BTreeManager} from "./BTreeManager";
 import { BTreeCallbackFn } from "./nodes/Decorators/BTreeAttribute";
@@ -58,16 +57,17 @@ function wrapLeafNode<T extends LeafNode>(props, ctor: new (props) => T) {
     return leafNode;
 }
 
+const wrapActionNode = (name: string, wrapperFn: (node: ActionNode) => boolean | NodeState, props, options?: { onComplete: () => void; waitForCompletion: boolean }) => {
 
-const wrapActionNode = (ctor, props) => {
+    let execActionNode = new ActionNode(wrapperFn, props, options);
 
-    let execActionNode = new ActionNodeBase(ctor, props);
     execActionNode.decorators = createDecoratorsFromProps(props);
-    execActionNode.getCaption = () => `${typeof ctor.getCaption === 'function' ? ctor.getCaption(props) : ctor.name}`
+    execActionNode.getCaption = () => `${ name }`
 
     let manager = BTreeManager.getInstance()
     manager.addToNodeMap(execActionNode);
     return execActionNode;
+
 }
 
 type omitUnion = "children" | "parentUid"|"blackboard"
@@ -113,7 +113,6 @@ interface IBaseActionProps extends IDecoratorsFromJSXProps {
 export {
     LeafNode,
     CompositeNode,
-    Action,
     NodeState,
     BTreeManager,
     wrapLeafNode,
