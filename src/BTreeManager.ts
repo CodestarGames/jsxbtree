@@ -42,7 +42,7 @@ export class BTreeManager {
         let treeInst = Tree({blackboard});
 
         this._applyLeafNodeGuardPaths(treeInst);
-        this._treeGeneratorTasks.set(treeInst, [...treeInst.children]);
+        this._treeGeneratorTasks.set(treeInst, [treeInst]);
         this.broadcastChannel = new BroadcastChannel('tree-debug');
 
         let timerId;
@@ -64,12 +64,7 @@ export class BTreeManager {
 
         this.currentGenerators.get(tree.uid).next();
 
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('debugTree')) {
-            let nodes = this.getFlattenedNodeDetails(tree);
-            this.broadcastChannel.postMessage(nodes);
 
-        }
     }
 
     private* processTick(tree): IterableIterator<NodeState> {
@@ -80,10 +75,19 @@ export class BTreeManager {
             // @ts-ignore
             let child = generatorTasks[0];
             child.update();
+
+            //update the debugger
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('debugTree')) {
+                let nodes = this.getFlattenedNodeDetails(tree);
+                this.broadcastChannel.postMessage(nodes);
+            }
+
             if (child.state.done) {
+
                 generatorTasks.shift();
                 if (generatorTasks.length === 0) {
-                    this._treeGeneratorTasks.set(tree, [...tree.children]);
+                    this._treeGeneratorTasks.set(tree, [tree]);
                     generatorTasks = this._treeGeneratorTasks.get(tree);
                     generatorTasks.forEach(child => child.reset());
                     this.currentGenerators.set(tree.uid, null);

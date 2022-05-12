@@ -51,16 +51,15 @@ export abstract class Node implements INode {
 
     getStateAsString() {
         const convertNodeStateToString = (state) => {
-            switch (state) {
-                case NodeState.RUNNING:
-                    return "running";
-                case NodeState.SUCCEEDED:
-                    return "succeeded";
-                case NodeState.FAILED:
-                    return "failed";
-                default:
-                    return "ready";
-            }
+            if(NodeState.is(state, NodeState.RUNNING))
+                return "running";
+            else if (NodeState.is(state, NodeState.SUCCEEDED))
+                return "succeeded";
+            else if (NodeState.is(state, NodeState.FAILED))
+                return "failed";
+            else
+                return "ready";
+
         };
 
         return convertNodeStateToString(this.state);

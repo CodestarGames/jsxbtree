@@ -7,14 +7,11 @@ import {NodeState} from "../NodeState";
 export class ActiveSelectorNode extends CompositeNode {
 
     onUpdate() {
-        let guardUnsatisfiedCount = 0;
         let foundChildToUpdate = null;
-        for (let i = 0; i < this.children.length; i++){
-            if(guardUnsatisfiedCount !== i) {
-                //we've found our one to updateState.
-                foundChildToUpdate = this.children[i-1];
-                break;
-            }
+        let errored = false;
+        for (let i = 0; i < this.children.length; i++) {
+
+            errored = false;
             const child = this.children[i];
             try {
                 child.guardPath.evaluate(this.blackboard);
@@ -22,17 +19,26 @@ export class ActiveSelectorNode extends CompositeNode {
             catch(error) {
                 // If the error is a GuardUnsatisfiedException then we need to determine if this node is the source.
                 if (error.constructor.name === 'GuardUnsatisifedException' && error.isSourceNode(child)) {
-                    guardUnsatisfiedCount++
+                    errored = true;
                     child.abort();
                 } else {
                     throw error;
                 }
             }
+            finally {
+                if(errored === false) {
+                    foundChildToUpdate = child;
+                }
+            }
+
+            if(foundChildToUpdate)
+                break;
         }
+
         if(foundChildToUpdate)
             foundChildToUpdate.update();
 
-        this.setState(guardUnsatisfiedCount === this.children.length ? NodeState.FAILED : NodeState.SUCCEEDED)
+        this.setState(foundChildToUpdate ? foundChildToUpdate.state : NodeState.FAILED)
 
 
 

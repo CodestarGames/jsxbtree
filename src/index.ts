@@ -16,6 +16,7 @@ import {NodeState} from "./NodeState";
 import {BTreeManager} from "./BTreeManager";
 import { BTreeCallbackFn } from "./nodes/Decorators/BTreeAttribute";
 import {ActiveSelectorNode} from "./nodes/ActiveSelectorNode";
+import {RootNode} from "./nodes/Root";
 
 
 //JSX specific functions
@@ -69,6 +70,7 @@ const wrapActionNode = (name: string, wrapperFn: (node: ActionNode) => boolean |
 
 }
 
+
 type omitUnion = "children" | "parentUid"|"blackboard"
 type CompositeAttrParams = Omit<ICompositeNodeParams, omitUnion>;
 type RepeatAttrParams = Omit<IRepeatParams, omitUnion>;
@@ -81,6 +83,7 @@ const Lotto = (attributes: CompositeAttrParams, children) => wrapCompositeNode<L
 const Selector = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SelectorNode>(attributes, children, SelectorNode);
 const ActiveSelector = (attributes: CompositeAttrParams, children) => wrapCompositeNode<ActiveSelectorNode>(attributes, children, ActiveSelectorNode);
 const Sequence = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SequenceNode>(attributes, children, SequenceNode);
+const Root = (attributes: CompositeAttrParams, children) => wrapCompositeNode<RootNode>(attributes, children, RootNode);
 const Repeat = (attributes: RepeatAttrParams, children) => wrapCompositeNode<RepeatNode>(attributes ?? {} as IRepeatParams, children, RepeatNode);
 
 const Wait = (attributes : WaitAttrParams) => wrapLeafNode<WaitNode>(attributes, WaitNode);
@@ -109,6 +112,7 @@ interface IBaseActionProps extends IDecoratorsFromJSXProps {
 }
 
 export {
+    Root,
     LeafNode,
     CompositeNode,
     NodeState,
