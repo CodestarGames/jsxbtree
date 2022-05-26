@@ -3,13 +3,14 @@ import {NodeState} from "../NodeState";
 
 
 
-export class ActionNode extends LeafNode {
+export class ActionNode<BB> extends LeafNode {
     private updatePromiseStateResult: any;
     private isUsingUpdatePromise: boolean;
     waitForCompletion: boolean;
     onComplete: () => void;
+    blackboard: BB;
 
-    constructor(readonly wrapperFn: (node: ActionNode) => boolean | NodeState, readonly props, options?: { waitForCompletion, onComplete }) {
+    constructor(readonly wrapperFn: (node: ActionNode<BB>) => boolean | NodeState, readonly props, options?: { waitForCompletion, onComplete }) {
         super(props);
         this.waitForCompletion = options?.waitForCompletion || false;
         this.onComplete = options?.onComplete || (() => {});

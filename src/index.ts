@@ -57,19 +57,18 @@ function wrapLeafNode<T extends LeafNode>(props, ctor: new (props) => T) {
     return leafNode;
 }
 
-const wrapActionNode = (name: string, wrapperFn: (node: ActionNode) => boolean | NodeState, props, options?: { onComplete: () => void; waitForCompletion: boolean }) => {
+function wrapActionNode<BB>(name: string, wrapperFn: (node: ActionNode<BB>) => boolean | NodeState, props, options?: { onComplete: () => void; waitForCompletion: boolean }) {
 
-    let execActionNode = new ActionNode(wrapperFn, props, options);
+    let execActionNode = new ActionNode<BB>(wrapperFn, props, options);
 
     execActionNode.decorators = createDecoratorsFromProps(props);
-    execActionNode.getCaption = () => `${ name }`
+    execActionNode.getCaption = () => `${name}`
 
     let manager = BTreeManager.getInstance()
     manager.addToNodeMap(execActionNode);
     return execActionNode;
 
 }
-
 
 type omitUnion = "children" | "parentUid"|"blackboard"
 type CompositeAttrParams = Omit<ICompositeNodeParams, omitUnion>;

@@ -5,6 +5,7 @@ import {NodeState} from "../NodeState";
 
 export class WaitNode extends LeafNode {
     private initialUpdateTime: number;
+    private duration: number;
     constructor(public props: IWaitParams) {
         super(props);
     }
@@ -13,6 +14,9 @@ export class WaitNode extends LeafNode {
 
         // If this node is in the READY state then we need to set the initial updateState time.
         if (this.is(NodeState.READY) || this.initialUpdateTime === null) {
+            //get the duration
+            this.duration = typeof this.props.duration === 'function' ? this.props.duration(this.blackboard) :  this.props.duration
+
             // Set the initial updateState time.
             this.initialUpdateTime = new Date().getTime();
 
@@ -21,7 +25,7 @@ export class WaitNode extends LeafNode {
         }
 
         // Have we waited long enough?
-        if (new Date().getTime() >= (this.initialUpdateTime + this.props.duration)) {
+        if (new Date().getTime() >= (this.initialUpdateTime + this.duration)) {
             // We have finished waiting!
             this.setState(NodeState.SUCCEEDED);
             this.initialUpdateTime = null;
@@ -29,12 +33,12 @@ export class WaitNode extends LeafNode {
     }
 
     getCaption(): string {
-        return `WAIT ${this.props.duration}ms`;
+        return `WAIT ${this.duration}ms`;
     }
 
     type = 'wait'
 }
 
 export interface IWaitParams extends IBaseActionProps{
-    duration: number;
+    duration: number | ((bb: any) => number);
 }

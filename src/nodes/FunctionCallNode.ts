@@ -2,6 +2,7 @@ import {LeafNode} from "./LeafNode";
 import {BTreeCallbackFn} from "./Decorators/BTreeAttribute";
 import {IBaseActionProps} from "../index";
 import {NodeState} from "../NodeState";
+import {IDecoratorsFromJSXProps} from "./Node";
 
 export class FunctionCallNode extends LeafNode {
 
@@ -21,6 +22,7 @@ export class FunctionCallNode extends LeafNode {
     type = 'action'
 }
 
-export interface IFunctionCallProps extends IBaseActionProps {
+export interface IFunctionCallProps extends IDecoratorsFromJSXProps {
+    parentUid?,
     fn: BTreeCallbackFn
 }
