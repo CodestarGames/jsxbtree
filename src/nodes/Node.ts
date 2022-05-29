@@ -213,6 +213,8 @@ export abstract class Node implements INode {
         }
     }
 
+    postUpdate: () => void = () => {}
+
     abort() {
         // There is nothing to do if this node is not in the running state.
         if (!this.is(NodeState.RUNNING)) {

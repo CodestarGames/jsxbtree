@@ -14,6 +14,7 @@ export class RootNode extends CompositeNode {
 
         // The state of the root node is the state of its child.
         this.setState(child.state);
+        this.postUpdate();
     }
 
     getCaption(): string {

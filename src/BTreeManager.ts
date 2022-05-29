@@ -38,7 +38,7 @@ export class BTreeManager {
         return this._instance;
     }
 
-    start(Tree: (props: any) => BTree.Node, tick: number = -1, blackboard: any) {
+    start(Tree: (props: any) => BTree.Node, tick: number = -1, blackboard: any): BTree.Node {
         let treeInst = Tree({blackboard});
 
         this._applyLeafNodeGuardPaths(treeInst);
@@ -55,6 +55,8 @@ export class BTreeManager {
         if (urlParams.get('debugTree')) {
             this.openTreeviewPopup();
         }
+
+        return treeInst;
     }
 
     onTickUpdate(tree) {
@@ -63,7 +65,6 @@ export class BTreeManager {
             this.currentGenerators.set(tree.uid, this.processTick(tree));
 
         this.currentGenerators.get(tree.uid).next();
-
 
     }
 
@@ -106,9 +107,8 @@ export class BTreeManager {
 
         //updateState any trees that aren't on a specified tick.
         this.trees.forEach((value) => {
-            if(value.tick === -1){
+            if(value.tick === -1)
                 this.onTickUpdate(value.tree);
-            }
         });
 
         this.timer.update(dt);
@@ -304,6 +304,5 @@ export class BTreeManager {
 
         };
     };
-
 
 }
