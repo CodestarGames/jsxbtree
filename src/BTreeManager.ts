@@ -126,6 +126,16 @@ export class BTreeManager {
         this.nodeMap.set(item.uid, item)
     }
 
+    destroy(tree: BTree.Node){
+        let { timerId } = this.trees.get(tree.uid);
+        this.timer.removeTimer(timerId);
+
+        this._treeGeneratorTasks.delete(tree)
+        this.currentGenerators.delete(tree.uid);
+        this.trees.delete(tree.uid);
+
+    }
+
     /**
      * Apply guard paths for every leaf node in the behaviour tree.
      */
