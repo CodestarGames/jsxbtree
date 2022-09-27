@@ -9,24 +9,27 @@ function TestTree (props) {
         <GameplaySequenceTemplate {...props}>
             {{
                 introSlot: <ActionConsoleLog txt={'do intro'}/>,
-                gamePlaySlot: <ActionConsoleLog txt={'do gameplay'}/>,
+                gamePlaySlot: (
+                    <Sequence>
+                        <ActionConsoleLog txt={'do gameplay'}/>
+                        <ActionConsoleLog txt={'do gameplay'}/>
+                        <ActionConsoleLog txt={'do gameplay'}/>
+                    </Sequence>
+                ),
                 outroSlot: <ActionConsoleLog txt={'do outro'}/>
             }}
         </GameplaySequenceTemplate>
     )
 }
 
-function processSlot(slot: any | (() => any)) {
-    return typeof slot === 'function' ? slot() : slot;
-}
-interface IGameLoopSlots extends IBaseActionProps {
-    children: {
-        introSlot?: Node | (() => Node)
-        gamePlaySlot?: Node | (() => Node)
-        outroSlot?: Node | (() => Node)
+
+
+
+function GameplaySequenceTemplate(props) {
+
+    const processSlot = (slot: any | (() => any)) => {
+        return typeof slot === 'function' ? slot() : slot;
     }
-}
-function GameplaySequenceTemplate(props: IGameLoopSlots) {
 
     let {introSlot, gamePlaySlot, outroSlot} = props.children[0];
     let _is = processSlot(introSlot);

@@ -375,3 +375,52 @@ const TestTree = (props) => (
     </Sequence>
 );
 ```
+
+#### Higher order (slotted ) branches
+Used for making control flow code where nodes can be inserted into "slots" in a higher order component.
+The following example shows how this can be used when making a typical gameplay loop.
+```
+
+function TestTree (props) {
+    return (
+        <GameplaySequenceTemplate {...props}>
+            {{
+                introSlot: <ActionConsoleLog txt={'do intro'}/>,
+                gamePlaySlot: (
+                    <Sequence>
+                        <ActionConsoleLog txt={'jump'}/>
+                        <ActionConsoleLog txt={'fight'}/>
+                        <ActionConsoleLog txt={'win'}/>
+                    </Sequence>
+                ),
+                outroSlot: <ActionConsoleLog txt={'do outro'}/>
+            }}
+        </GameplaySequenceTemplate>
+    )
+}
+
+
+
+
+function GameplaySequenceTemplate(props) {
+
+    const processSlot = (slot: any | (() => any)) => {
+        return typeof slot === 'function' ? slot() : slot;
+    }
+    
+    let {introSlot, gamePlaySlot, outroSlot} = props.children[0];
+    let _is = processSlot(introSlot);
+    let _gps = processSlot(gamePlaySlot);
+    let _os = processSlot(outroSlot);
+
+    return (
+        <Sequence {...props}>
+            { _is && cloneChildren(_is, Object.assign({}, props))[0] }
+            { _gps && cloneChildren(_gps, Object.assign({}, props))[0] }
+            { _os && cloneChildren(_os, Object.assign({}, props))[0] }
+        </Sequence>
+    )
+
+}
+```
+
