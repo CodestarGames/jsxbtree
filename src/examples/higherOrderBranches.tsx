@@ -1,5 +1,5 @@
 import jsx, {cloneChildren, IBaseActionProps, Sequence} from '../'
-import ActionConsoleLog from "./ActionConsoleLog";
+import {ActionConsoleLog} from "./ActionConsoleLog";
 import {Node} from "../nodes/Node";
 import {BTreeManager} from "../BTreeManager";
 
@@ -27,10 +27,12 @@ interface IGameLoopSlots extends IBaseActionProps {
     }
 }
 function GameplaySequenceTemplate(props: IGameLoopSlots) {
+
     let {introSlot, gamePlaySlot, outroSlot} = props.children[0];
     let _is = processSlot(introSlot);
     let _gps = processSlot(gamePlaySlot);
     let _os = processSlot(outroSlot);
+
     return (
         <Sequence {...props}>
             { _is && cloneChildren(_is, Object.assign({}, props))[0] }
@@ -38,6 +40,7 @@ function GameplaySequenceTemplate(props: IGameLoopSlots) {
             { _os && cloneChildren(_os, Object.assign({}, props))[0] }
         </Sequence>
     )
+
 }
 
 const main = () => {
