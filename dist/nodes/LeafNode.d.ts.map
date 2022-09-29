@@ -1,0 +1,1 @@
+{"version":3,"file":"LeafNode.d.ts","sourceRoot":"","sources":["../../src/nodes/LeafNode.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,IAAI,EAAC,MAAM,QAAQ,CAAC;AAE5B,8BAAsB,QAAS,SAAQ,IAAI;IAEpB,KAAK;IADxB,GAAG,EAAE,MAAM,CAAC;gBACO,KAAK,KAAA;IAIxB,QAAQ,CAAC,QAAQ,IAAI,IAAI;IAEzB,UAAU,gBAAc;CAE3B"}

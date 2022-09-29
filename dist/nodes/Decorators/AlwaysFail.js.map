@@ -1,0 +1,1 @@
+{"version":3,"file":"AlwaysFail.js","sourceRoot":"","sources":["../../../src/nodes/Decorators/AlwaysFail.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,cAAc,EAAC,MAAM,kBAAkB,CAAC;AAEhD,MAAM,CAAC,OAAO,OAAO,UAAW,SAAQ,cAAc;IAElD,YAAY,OAAgB;QACxB,KAAK,EAAE,CAAC;IACZ,CAAC;IAED,wBAAwB;IACxB,UAAU;QACN,OAAO,EAAC,IAAI,EAAE,IAAI,CAAC,OAAO,EAAE,EAAC,CAAC;IAClC,CAAC;CAKJ"}

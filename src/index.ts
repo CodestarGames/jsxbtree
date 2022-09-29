@@ -44,6 +44,7 @@ function wrapCompositeNode<T extends CompositeNode>(props, children: Node[], cto
     let manager = BTreeManager.getInstance();
     manager.addToNodeMap(compNode);
     compNode.children = cloneChildren(children, {parentUid: compNode.uid});
+    compNode.key = compNode.uid;
     return compNode;
 
 }
@@ -54,6 +55,7 @@ function wrapLeafNode<T extends LeafNode>(props, ctor: new (props) => T) {
     leafNode.decorators = createDecoratorsFromProps(props)
     let manager = BTreeManager.getInstance();
     manager.addToNodeMap(leafNode);
+    leafNode.key = leafNode.uid;
     return leafNode;
 }
 
@@ -70,20 +72,20 @@ function wrapActionNode<BB>(name: string, wrapperFn: (node: ActionNode<BB>) => b
 
 }
 
-type omitUnion = "children" | "parentUid"|"blackboard"
+type omitUnion = "parentUid"|"blackboard"
 type CompositeAttrParams = Omit<ICompositeNodeParams, omitUnion>;
 type RepeatAttrParams = Omit<IRepeatParams, omitUnion>;
 type WaitAttrParams = Omit<IWaitParams, omitUnion>;
 type ConditionAttrParams = Omit<IConditionParams, omitUnion>;
 type FunctionCallAttrParams = Omit<IFunctionCallProps, omitUnion>;
 
-const Parallel = (attributes: CompositeAttrParams, children) => wrapCompositeNode<ParallelNode>(attributes, children, ParallelNode);
-const Lotto = (attributes: CompositeAttrParams, children) => wrapCompositeNode<LottoNode>(attributes, children, LottoNode);
-const Selector = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SelectorNode>(attributes, children, SelectorNode);
-const ActiveSelector = (attributes: CompositeAttrParams, children) => wrapCompositeNode<ActiveSelectorNode>(attributes, children, ActiveSelectorNode);
-const Sequence = (attributes: CompositeAttrParams, children) => wrapCompositeNode<SequenceNode>(attributes, children, SequenceNode);
-const Root = (attributes: CompositeAttrParams, children) => wrapCompositeNode<RootNode>(attributes, children, RootNode);
-const Repeat = (attributes: RepeatAttrParams, children) => wrapCompositeNode<RepeatNode>(attributes ?? {} as IRepeatParams, children, RepeatNode);
+const Parallel = (attributes: CompositeAttrParams) => wrapCompositeNode<ParallelNode>(attributes, attributes.children, ParallelNode);
+const Lotto = (attributes: CompositeAttrParams) => wrapCompositeNode<LottoNode>(attributes, attributes.children, LottoNode);
+const Selector = (attributes: CompositeAttrParams,) => wrapCompositeNode<SelectorNode>(attributes, attributes.children, SelectorNode);
+const ActiveSelector = (attributes: CompositeAttrParams) => wrapCompositeNode<ActiveSelectorNode>(attributes, attributes.children, ActiveSelectorNode);
+const Sequence = (attributes: CompositeAttrParams) => wrapCompositeNode<SequenceNode>(attributes, attributes.children, SequenceNode);
+const Root = (attributes: CompositeAttrParams) => wrapCompositeNode<RootNode>(attributes, attributes.children, RootNode);
+const Repeat = (attributes: RepeatAttrParams) => wrapCompositeNode<RepeatNode>(attributes ?? {} as IRepeatParams, attributes.children, RepeatNode);
 
 const Wait = (attributes : WaitAttrParams) => wrapLeafNode<WaitNode>(attributes, WaitNode);
 const Condition = (attributes: ConditionAttrParams) => wrapLeafNode<ConditionNode>(attributes ?? {} as IConditionParams, ConditionNode);

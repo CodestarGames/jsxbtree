@@ -1,0 +1,1 @@
+{"version":3,"file":"Lotto.d.ts","sourceRoot":"","sources":["../../src/nodes/Lotto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,aAAa,EAAC,MAAM,iBAAiB,CAAC;AAC9C,OAAO,EAAC,IAAI,EAAC,MAAM,QAAQ,CAAC;AAG5B,qBAAa,SAAU,SAAQ,aAAa;IAExC,YAAY,EAAE,IAAI,CAAC;IAEnB,KAAK;IAKL,QAAQ;IAaR,UAAU,IAAI,MAAM;IAIpB,IAAI,SAAU;CACjB"}

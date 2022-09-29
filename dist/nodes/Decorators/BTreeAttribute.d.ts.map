@@ -1,0 +1,1 @@
+{"version":3,"file":"BTreeAttribute.d.ts","sourceRoot":"","sources":["../../../src/nodes/Decorators/BTreeAttribute.ts"],"names":[],"mappings":"AAAA;;;GAGG;AACH,8BAAsB,cAAc;IAEhC;;OAEG;IACH,OAAO,eAA+B;IAEtC;;OAEG;IACH,OAAO,gBAAe;IAEtB;;OAEG;IACH,UAAU;;;CAKb;AAGD,oBAAY,eAAe,GAAG,CAAC,UAAU,CAAC,KAAA,KAAK,IAAI,CAAA;AAEnD,oBAAY,YAAY,GAAG,CAAC,UAAU,CAAC,KAAA,KAAK,OAAO,CAAA"}

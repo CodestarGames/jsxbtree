@@ -1,0 +1,1 @@
+{"version":3,"file":"Cond.d.ts","sourceRoot":"","sources":["../../../src/nodes/Decorators/Cond.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,cAAc,EAAE,YAAY,EAAC,MAAM,kBAAkB,CAAC;AAE9D,MAAM,CAAC,OAAO,OAAO,IAAK,SAAQ,cAAc;IACzB,aAAa,EAAE,YAAY;gBAA3B,aAAa,EAAE,YAAY;IAK9C,UAAU;;;;IAIV,iBAAiB,CAAC,UAAU,KAAA,GAAI,OAAO;CAO1C"}
