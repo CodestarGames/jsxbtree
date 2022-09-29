@@ -8,9 +8,9 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.62",
-    "jsxbtree": "https://github.com/CodestarGames/jsxbtree.git",
     "react-scripts": "5.0.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "jsxbtree": "https://github.com/CodestarGames/jsxbtree.git"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -27,7 +27,7 @@ export class BTreeManager {
         this.trees = new Map<string, ITreeData>();
         this._treeGeneratorTasks = new Map<Node, Array<any>>();
         this.currentGenerators = new Map<string, any>();
-        this.broadcastChannel = new BroadcastChannel('tree-debug');
+
     }
 
     static getInstance(): BTreeManager {
@@ -43,7 +43,6 @@ export class BTreeManager {
 
         this._applyLeafNodeGuardPaths(treeInst);
         this._treeGeneratorTasks.set(treeInst, [treeInst]);
-        this.broadcastChannel = new BroadcastChannel('tree-debug');
 
         let timerId;
         if(tick !== -1)
@@ -52,12 +51,14 @@ export class BTreeManager {
         this.trees.set(treeInst.uid, {tree: treeInst, tick, timerId});
 
         if(debugTarget) {
+            this.broadcastChannel = new BroadcastChannel('tree-debug');
             this.renderDebugger(window, document.getElementById(debugTarget));
         }
         else
         {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('debugTree')) {
+                this.broadcastChannel = new BroadcastChannel('tree-debug');
                 this.openTreeviewPopup();
             }
         }
@@ -83,8 +84,7 @@ export class BTreeManager {
             child.update();
 
             //update the debugger
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('debugTree')) {
+            if (this.broadcastChannel) {
                 let nodes = this.getFlattenedNodeDetails(tree);
                 this.broadcastChannel.postMessage(nodes);
             }
