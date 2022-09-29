@@ -237,13 +237,13 @@ export class BTreeManager {
                 }
             };
             // @ts-ignore
-            if (!newWindow.workFlo) {
+            if (!container.workFlo) {
                 // @ts-ignore
-                newWindow.workFlo = new Workflo(targetElem ?? container.document.getElementById('loopVisualizer'), options);
+                container.workFlo = new Workflo(targetElem ?? container.document.getElementById('loopVisualizer'), options);
             }
             else {
                 // @ts-ignore
-                newWindow.workFlo.update(container, nodes);
+                container.workFlo.update(container, nodes);
             }
         };
     }
