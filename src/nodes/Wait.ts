@@ -15,7 +15,7 @@ export class WaitNode extends LeafNode {
         // If this node is in the READY state then we need to set the initial updateState time.
         if (this.is(NodeState.READY) || this.initialUpdateTime === null) {
             //get the duration
-            this.duration = typeof this.props.duration === 'function' ? this.props.duration(this.blackboard) :  this.props.duration
+            this.duration = typeof this.props.duration === 'function' ? this.props.duration(this.blackboard) :  this.props.duration;
 
             // Set the initial updateState time.
             this.initialUpdateTime = new Date().getTime();

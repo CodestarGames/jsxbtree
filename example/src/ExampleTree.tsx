@@ -3,7 +3,7 @@
 import BtreeJSX, {wrapActionNode, Selector, Wait, Sequence, FunctionCall, Repeat, Parallel, Lotto} from "jsxbtree";
 
 let wrappedFn = (node) => {
-    console.log(`ActionConsoleLog : ${node.props.txt}`);
+    console.log(`ActionConsoleLog : ${typeof node.props.txt === 'function' ? node.props.txt(node.blackboard) : node.props.txt}`);
     return true;
 };
 
@@ -14,6 +14,7 @@ export const ExampleTree = (props) => (
         <Sequence while={(blackboard) => blackboard.timeout < 5000} >
             <Wait duration={1000}/>
             <FunctionCall fn={(bb) => { bb.timeout += 1000; }}/>
+            <ActionConsoleLog txt={(bb) => bb.timeout}/>
         </Sequence>
         <TestBranch/>
     </Selector>

@@ -4,13 +4,14 @@ import {ExampleTree} from "./ExampleTree";
 const main = () => {
 
     let blackboard = {
-        message: 'hello from the blackboard!'
+        timeout: 0,
     };
 
     let treeManager = BTreeManager.getInstance();
 
     let lastTime: number;
     function gameLoop(time: number) {
+
         if (lastTime != null) {
             const dt = time - lastTime;
             treeManager.update(dt);
