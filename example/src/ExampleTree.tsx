@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx BtreeJSX */
 import BtreeJSX, {wrapActionNode, Selector, Wait, Sequence, FunctionCall, Repeat, Parallel, Lotto} from "jsxbtree";
 

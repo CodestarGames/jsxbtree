@@ -10,7 +10,7 @@ export declare class BTreeManager {
     private broadcastChannel;
     private constructor();
     static getInstance(): BTreeManager;
-    start(Tree: (props: any) => BTree.Node, tick: number, blackboard: any): BTree.Node;
+    start(Tree: (props: any) => BTree.Node, tick: number, blackboard: any, debugTarget: string): BTree.Node;
     onTickUpdate(tree: any): void;
     private processTick;
     update(dt: any): void;
@@ -30,6 +30,7 @@ export declare class BTreeManager {
      * @returns The flattened details of every node in the tree.
      */
     getFlattenedNodeDetails(Tree: any): any[];
+    renderDebugger(container: Window, targetElem?: HTMLElement): void;
     openTreeviewPopup(): void;
 }
 //# sourceMappingURL=BTreeManager.d.ts.map

@@ -38,7 +38,7 @@ export class BTreeManager {
         return this._instance;
     }
 
-    start(Tree: (props: any) => BTree.Node, tick: number = -1, blackboard: any): BTree.Node {
+    start(Tree: (props: any) => BTree.Node, tick: number = -1, blackboard: any, debugTarget: string): BTree.Node {
         let treeInst = Tree({blackboard});
 
         this._applyLeafNodeGuardPaths(treeInst);
@@ -51,11 +51,16 @@ export class BTreeManager {
 
         this.trees.set(treeInst.uid, {tree: treeInst, tick, timerId});
 
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('debugTree')) {
-            this.openTreeviewPopup();
+        if(debugTarget) {
+            this.renderDebugger(window, document.getElementById(debugTarget));
         }
-
+        else
+        {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('debugTree')) {
+                this.openTreeviewPopup();
+            }
+        }
         return treeInst;
     }
 
@@ -227,40 +232,37 @@ export class BTreeManager {
         return flattenedTreeNodes;
     };
 
-    openTreeviewPopup() {
-
-        let newWindow = open('/?debugTreeChild=true', 'example', 'width=640,height=480')
-        newWindow.focus();
-        newWindow.onload = function () {
-
+    renderDebugger(container: Window, targetElem?: HTMLElement) {
+        if(!targetElem) {
             let html = `<div id="loopVisualizer" style="background: white; width: 100%; height: 100%;"></div>`;
-            newWindow.document.body.insertAdjacentHTML('afterbegin', html);
+            container.document.body.insertAdjacentHTML('afterbegin', html);
+        }
 
-            let bc = new BroadcastChannel('tree-debug');
-            bc.onmessage = event => {
-                let nodes = event.data;
-                // Build the tree view.
-                var options = {
-                    data: nodes,
-                    nodeIdField: "id",
-                    nodeNameField: "caption",
-                    nodeTypeField: "type",
-                    nodeParentField: "parentId",
-                    definition: {
-                        default: {
-                            tooltip: function (node) {
-                                return node.item.caption
-                            },
-                            template: (node) => {
-                                if (node.item.decorators) {
+        let bc = new BroadcastChannel('tree-debug');
+        bc.onmessage = event => {
+            let nodes = event.data;
+            // Build the tree view.
+            var options = {
+                data: nodes,
+                nodeIdField: "id",
+                nodeNameField: "caption",
+                nodeTypeField: "type",
+                nodeParentField: "parentId",
+                definition: {
+                    default: {
+                        tooltip: function (node) {
+                            return node.item.caption
+                        },
+                        template: (node) => {
+                            if (node.item.decorators) {
 
-                                    const getDecoratorHTMl = () =>
-                                        node.item.decorators.map((decorator) => {
-                                            return `<hr style="margin-top: 1px; margin-bottom: 1px;">
+                                const getDecoratorHTMl = () =>
+                                    node.item.decorators.map((decorator) => {
+                                        return `<hr style="margin-top: 1px; margin-bottom: 1px;">
                                 <i class='tree-view-caption'>${decorator.type.toUpperCase()} ${decorator.condition || decorator.executionFunc || ''}</i>`;
-                                        }).join("");
+                                    }).join("");
 
-                                    return `<div id="${node.item.id}" class='tree-view-node ${node.item.state}'>
+                                return `<div id="${node.item.id}" class='tree-view-node ${node.item.state}'>
                             <div class='tree-view-icon tree-view-icon-${node.item.type}'>
                            
                             </div>
@@ -269,39 +271,46 @@ export class BTreeManager {
                             ${getDecoratorHTMl()}
                             </div>
                             </div>`;
-                                } else {
-                                    return `<div id="${node.item.id}" class='tree-view-node" ${node.item.state}'>
+                            } else {
+                                return `<div id="${node.item.id}" class='tree-view-node" ${node.item.state}'>
                             <div class='tree-view-icon tree-view-icon-${node.item.type}'>
                             </div>
                             <div><p class='tree-view-caption'>${node.item.caption}</p></div>
                             </div>`;
-                                }
                             }
                         }
-                    },
-                    line: {
-                        type: "angled",
-                        thickness: 2,
-                        colour: "#a3a1a1",
-                        cap: "round"
-                    },
-                    layout: {
-                        rootNodeOrientation: "vertical",
-                        direction: "horizontal"
                     }
-                };
-
-                // @ts-ignore
-                if (!newWindow.workFlo) {
-                    // @ts-ignore
-                    newWindow.workFlo = new Workflo(newWindow.document.getElementById('loopVisualizer'), options);
-                } else {
-                    // @ts-ignore
-                    newWindow.workFlo.update(newWindow, nodes);
+                },
+                line: {
+                    type: "angled",
+                    thickness: 2,
+                    colour: "#a3a1a1",
+                    cap: "round"
+                },
+                layout: {
+                    rootNodeOrientation: "vertical",
+                    direction: "horizontal"
                 }
+            };
 
+            // @ts-ignore
+            if (!newWindow.workFlo) {
+                // @ts-ignore
+                newWindow.workFlo = new Workflo(targetElem ?? container.document.getElementById('loopVisualizer'), options);
+            } else {
+                // @ts-ignore
+                newWindow.workFlo.update(container, nodes);
             }
 
+        }
+    }
+
+    openTreeviewPopup() {
+
+        let newWindow = open('/?debugTreeChild=true', 'example', 'width=640,height=480')
+        newWindow.focus();
+        newWindow.onload = () => {
+            this.renderDebugger(newWindow);
         };
     };
 

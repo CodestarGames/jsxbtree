@@ -13,17 +13,17 @@ const main = () => {
     function gameLoop(time: number) {
         if (lastTime != null) {
             const dt = time - lastTime;
-            BTreeManager.getInstance().update(dt);
+            treeManager.update(dt);
         }
-        lastTime = time
+        lastTime = time;
         window.requestAnimationFrame(gameLoop)
     }
 
-    window.requestAnimationFrame(gameLoop)
-    treeManager.start(ExampleTree, 60, blackboard);
+    window.requestAnimationFrame(gameLoop);
+    treeManager.start(ExampleTree, 10, blackboard, "root");
 
 };
 
-setTimeout(() => { main(); }, 2000)
+setTimeout(() => { main(); }, 2000);
 
 
