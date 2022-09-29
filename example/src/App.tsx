@@ -1,7 +1,7 @@
-import React from 'react';
+import React , {useEffect } from 'react';
 
 import {ExampleTree} from "./ExampleTree";
-import {BTreeManager} from "../dist";
+import {BTreeManager} from "jsxbtree";
 
 const main = () => {
 
@@ -27,7 +27,9 @@ const main = () => {
 }
 
 function App() {
-
+  useEffect(() => {
+    main();
+  }, [])
   return (<div className="App"></div>);
 }
 

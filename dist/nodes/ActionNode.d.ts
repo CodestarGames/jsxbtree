@@ -7,7 +7,6 @@ export declare class ActionNode<BB> extends LeafNode {
     private isUsingUpdatePromise;
     waitForCompletion: boolean;
     onComplete: () => void;
-    blackboard: BB;
     constructor(wrapperFn: (node: ActionNode<BB>) => boolean | NodeState, props: any, options?: {
         waitForCompletion: any;
         onComplete: any;
