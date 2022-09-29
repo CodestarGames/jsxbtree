@@ -93,11 +93,10 @@ const FunctionCall = (attributes: FunctionCallAttrParams) => wrapLeafNode<Functi
 
 //
 // function jsx<T extends Node>(kind: T, attributes: { [key: string]: any } | null, ...children)
-function jsx(kind: JSX.Component, attributes: { [key: string]: any } | null, ...children) {
+function BtreeJSX(kind: JSX.Component, attributes: { [key: string]: any } | null, ...children) {
 
     let branchName = kind.name.indexOf('Act') > -1 ? undefined : kind.name;
     return kind({...attributes, branchName, children } ?? {branchName }, children);
-
 
 }
 
@@ -135,4 +134,4 @@ export {
     FunctionCall
 }
 
-export default jsx;
+export default BtreeJSX;

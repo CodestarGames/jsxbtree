@@ -1,11 +1,12 @@
-import {wrapActionNode, Selector, Wait, Sequence, FunctionCall, Repeat, Parallel, Lotto} from "jsxbtree";
+/** @jsx BtreeJSX */
+import BtreeJSX, {wrapActionNode, Selector, Wait, Sequence, FunctionCall, Repeat, Parallel, Lotto} from "jsxbtree";
 
 let wrappedFn = (node) => {
     console.log(`ActionConsoleLog : ${node.props.txt}`);
     return true;
 };
 
-export const ActionConsoleLog = (props) => wrapActionNode('ActionConsoleLog', wrappedFn, props)
+export const ActionConsoleLog = (props) => wrapActionNode('ActionConsoleLog', wrappedFn, props);
 
 export const ExampleTree = (props) => (
     <Selector {...props}>

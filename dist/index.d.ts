@@ -39,7 +39,7 @@ declare const Repeat: (attributes: RepeatAttrParams) => RepeatNode;
 declare const Wait: (attributes: WaitAttrParams) => WaitNode;
 declare const Condition: (attributes: ConditionAttrParams) => ConditionNode;
 declare const FunctionCall: (attributes: FunctionCallAttrParams) => FunctionCallNode;
-declare function jsx(kind: JSX.Component, attributes: {
+declare function BtreeJSX(kind: JSX.Component, attributes: {
     [key: string]: any;
 } | null, ...children: any[]): BTree.Node;
 export declare const Fragment: (props: any, ...children: any[]) => any[];
@@ -49,5 +49,5 @@ interface IBaseActionProps extends IDecoratorsFromJSXProps {
     blackboard?: any;
 }
 export { Root, LeafNode, CompositeNode, NodeState, BTreeManager, wrapLeafNode, wrapCompositeNode, wrapActionNode, IBaseActionProps, BTreeCallbackFn, Wait, Lotto, Parallel, Selector, ActiveSelector, Sequence, Repeat, Condition, FunctionCall };
-export default jsx;
+export default BtreeJSX;
 //# sourceMappingURL=index.d.ts.map

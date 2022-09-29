@@ -1,4 +1,7 @@
-import jsx, {FunctionCall, Lotto, Parallel, Repeat, Selector, Sequence, Wait } from '../'
+/** @jsx BtreeJSX */
+
+import BtreeJSX, {FunctionCall, Lotto, Parallel, Repeat, Selector, Sequence, Wait } from '../'
+import React from 'react';
 import {ActionConsoleLog} from "./ActionConsoleLog";
 import {BTreeManager} from "../BTreeManager";
 

@@ -7,6 +7,9 @@
   "repository": {
     "url": "git@github.com:CodestarGames/jsxbtree.git"
   },
+  "dependencies": {
+    "react": "^18.2.0"
+  },
   "scripts": {
     "prepublish": "tsc",
     "build": "tsc",

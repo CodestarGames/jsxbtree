@@ -66,7 +66,7 @@ const Condition = (attributes) => wrapLeafNode(attributes ?? {}, ConditionNode);
 const FunctionCall = (attributes) => wrapLeafNode(attributes, FunctionCallNode);
 //
 // function jsx<T extends Node>(kind: T, attributes: { [key: string]: any } | null, ...children)
-function jsx(kind, attributes, ...children) {
+function BtreeJSX(kind, attributes, ...children) {
     let branchName = kind.name.indexOf('Act') > -1 ? undefined : kind.name;
     return kind({ ...attributes, branchName, children } ?? { branchName }, children);
 }
@@ -74,5 +74,5 @@ export const Fragment = (props, ...children) => {
     return children;
 };
 export { Root, LeafNode, CompositeNode, NodeState, BTreeManager, wrapLeafNode, wrapCompositeNode, wrapActionNode, Wait, Lotto, Parallel, Selector, ActiveSelector, Sequence, Repeat, Condition, FunctionCall };
-export default jsx;
+export default BtreeJSX;
 //# sourceMappingURL=index.js.map

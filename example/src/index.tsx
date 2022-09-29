@@ -1,10 +1,29 @@
-import React, {ReactNode} from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import {BTreeManager} from "jsxbtree";
+import {ExampleTree} from "./ExampleTree";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const main = () => {
 
-root.render(<App/> as unknown as ReactNode);
+    let blackboard = {
+        message: 'hello from the blackboard!'
+    };
+
+    let treeManager = BTreeManager.getInstance();
+
+    let lastTime: number;
+    function gameLoop(time: number) {
+        if (lastTime != null) {
+            const dt = time - lastTime;
+            BTreeManager.getInstance().update(dt);
+        }
+        lastTime = time
+        window.requestAnimationFrame(gameLoop)
+    }
+
+    window.requestAnimationFrame(gameLoop)
+    treeManager.start(ExampleTree, 60, blackboard);
+
+};
+
+setTimeout(() => { main(); }, 2000)
+
 
