@@ -6,25 +6,24 @@ import { BTreeAttribute } from '../Decorators/BTreeAttribute';
 export default class Until extends BTreeAttribute {
     constructor(condition) {
         super();
+        /**
+         * Gets whether the decorator is a guard.
+         */
+        this.isGuard = () => true;
+        this.getDetails = () => ({ condition: this.condition?.name || 'anonymous', type: this.getType() });
+        /**
+         * Gets the Condition of the guard.
+         */
+        this.getCondition = () => this.condition;
+        /**
+         * Gets whether the guard is satisfied.
+         * @param blackboard The board.
+         * @returns Whether the guard is satisfied.
+         */
+        this.isSatisfied = (blackboard) => {
+            return this.condition(blackboard) === false;
+        };
         this.condition = condition;
     }
-    /**
-     * Gets whether the decorator is a guard.
-     */
-    isGuard = () => true;
-    condition;
-    getDetails = () => ({ condition: this.condition?.name || 'anonymous', type: this.getType() });
-    /**
-     * Gets the Condition of the guard.
-     */
-    getCondition = () => this.condition;
-    /**
-     * Gets whether the guard is satisfied.
-     * @param blackboard The board.
-     * @returns Whether the guard is satisfied.
-     */
-    isSatisfied = (blackboard) => {
-        return this.condition(blackboard) === false;
-    };
 }
 //# sourceMappingURL=Until.js.map

@@ -1,6 +1,5 @@
 import { BTreeAttribute } from "../Decorators/BTreeAttribute";
 export default class Step extends BTreeAttribute {
-    executionFunc;
     constructor(executionFunc) {
         super();
         this.executionFunc = executionFunc;

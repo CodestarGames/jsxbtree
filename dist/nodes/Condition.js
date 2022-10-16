@@ -5,6 +5,10 @@ import { NodeState } from "../NodeState";
  * This will succeed or fail immediately based on a board predicate, without moving to the 'RUNNING' state.
  * **/
 export class ConditionNode extends LeafNode {
+    constructor() {
+        super(...arguments);
+        this.type = 'condition';
+    }
     onUpdate() {
         if (this.props.eq(this.blackboard) === true)
             this.setState(NodeState.SUCCEEDED);
@@ -14,6 +18,5 @@ export class ConditionNode extends LeafNode {
     getCaption() {
         return "CONDITION";
     }
-    type = 'condition';
 }
 //# sourceMappingURL=Condition.js.map

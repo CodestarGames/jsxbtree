@@ -1,11 +1,9 @@
 import { Node } from "./Node";
 export class LeafNode extends Node {
-    props;
-    key;
     constructor(props) {
         super(props);
         this.props = props;
+        this.isLeafNode = () => true;
     }
-    isLeafNode = () => true;
 }
 //# sourceMappingURL=LeafNode.js.map

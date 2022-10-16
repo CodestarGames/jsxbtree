@@ -1,10 +1,10 @@
 import { LeafNode } from "./LeafNode";
 import { NodeState } from "../NodeState";
 export class FunctionCallNode extends LeafNode {
-    props;
     constructor(props) {
         super(props);
         this.props = props;
+        this.type = 'action';
     }
     onUpdate() {
         this.props.fn(this.blackboard);
@@ -13,6 +13,5 @@ export class FunctionCallNode extends LeafNode {
     getCaption() {
         return "FunctionCall";
     }
-    type = 'action';
 }
 //# sourceMappingURL=FunctionCallNode.js.map

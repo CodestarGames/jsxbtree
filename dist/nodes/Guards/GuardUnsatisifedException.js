@@ -3,29 +3,27 @@
  * @param source The node at which a guard Condition failed.
  */
 export class GuardUnsatisifedException extends Error {
-    source;
     constructor(source) {
         super(GuardUnsatisifedException.message);
+        /**
+         * Gets whether the specified node is the node at which a guard Condition failed.
+         * @param node The node to check against the source node.
+         * @returns Whether the specified node is the node at which a guard Condition failed.
+         */
+        this.isSourceNode = (node) => node === this.source;
         Object.setPrototypeOf(this, GuardUnsatisifedException.prototype);
         this.source = source;
     }
-    /**
-     * The exception message.
-     */
-    static message = "A guard path Condition has failed";
-    /**
-     * Gets whether the specified node is the node at which a guard Condition failed.
-     * @param node The node to check against the source node.
-     * @returns Whether the specified node is the node at which a guard Condition failed.
-     */
-    isSourceNode = (node) => node === this.source;
 }
+/**
+ * The exception message.
+ */
+GuardUnsatisifedException.message = "A guard path Condition has failed";
 /**
  * Represents a path of node guards along a root-to-leaf tree path.
  * @param nodes An array of objects defining a node getInstance -> guard link, ordered by node depth.
  */
 export class GuardPath {
-    nodes;
     constructor(nodes) {
         this.nodes = nodes;
     }

@@ -1,6 +1,10 @@
 import { CompositeNode } from "./CompositeNode";
 import { NodeState } from "../NodeState";
 export class ParallelNode extends CompositeNode {
+    constructor() {
+        super(...arguments);
+        this.type = 'parallel';
+    }
     onUpdate() {
         // Keep a count of the number of succeeded child 
         let succeededCount = 0;
@@ -49,6 +53,5 @@ export class ParallelNode extends CompositeNode {
     getCaption() {
         return "PARALLEL";
     }
-    type = 'parallel';
 }
 //# sourceMappingURL=Parallel.js.map

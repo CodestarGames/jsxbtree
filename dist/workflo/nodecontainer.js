@@ -2,9 +2,6 @@
  * A node container.
  */
 export class NodeContainer {
-    nodeContainer;
-    parentContainer;
-    childContainer;
     constructor() {
         this.nodeContainer = document.createElement("div");
         this.nodeContainer.className = "node-container";

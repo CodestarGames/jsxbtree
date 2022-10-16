@@ -4,6 +4,10 @@ import { NodeState } from "../NodeState";
  * @classdesc Active selectors execute all child guards and only succeed one that doesn't fail.
  */
 export class ActiveSelectorNode extends CompositeNode {
+    constructor() {
+        super(...arguments);
+        this.type = 'activeSelector';
+    }
     onUpdate() {
         let foundChildToUpdate = null;
         let errored = false;
@@ -38,6 +42,5 @@ export class ActiveSelectorNode extends CompositeNode {
     getCaption() {
         return "ACTIVESELECTOR";
     }
-    type = 'activeSelector';
 }
 //# sourceMappingURL=ActiveSelectorNode.js.map

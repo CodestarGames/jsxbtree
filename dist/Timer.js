@@ -1,9 +1,4 @@
 export class Timer {
-    static _instance;
-    _key_index;
-    _key_pool;
-    _calls;
-    _time_func;
     constructor() {
         this._key_index = 0;
         this._key_pool = new Array();

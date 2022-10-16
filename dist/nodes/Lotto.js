@@ -1,7 +1,10 @@
 import { CompositeNode } from "./CompositeNode";
 import { NodeState } from "../NodeState";
 export class LottoNode extends CompositeNode {
-    winningChild;
+    constructor() {
+        super(...arguments);
+        this.type = 'lotto';
+    }
     reset() {
         super.reset();
         this.winningChild = null;
@@ -20,6 +23,5 @@ export class LottoNode extends CompositeNode {
     getCaption() {
         return "LOTTO";
     }
-    type = 'lotto';
 }
 //# sourceMappingURL=Lotto.js.map

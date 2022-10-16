@@ -1,6 +1,10 @@
 import { CompositeNode } from "./CompositeNode";
 import { NodeState } from "../NodeState";
 export class SequenceNode extends CompositeNode {
+    constructor() {
+        super(...arguments);
+        this.type = 'sequence';
+    }
     onUpdate() {
         // Iterate over all of the children of this node.
         for (const child of this.children) {
@@ -45,6 +49,5 @@ export class SequenceNode extends CompositeNode {
     getCaption() {
         return "SEQUENCE";
     }
-    type = 'sequence';
 }
 //# sourceMappingURL=Sequence.js.map

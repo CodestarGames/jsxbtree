@@ -8,12 +8,11 @@ import Step from "./CallBacks/Step";
 import Exit from "./CallBacks/Exit";
 import { NodeState } from "../NodeState";
 export class Node {
-    props;
-    uid;
-    blackboard;
-    branchName;
     constructor(props = {}) {
         this.props = props;
+        this._decorators = [];
+        this._children = [];
+        this.postUpdate = () => { };
         /**
          * The node state.
          */
@@ -45,8 +44,6 @@ export class Node {
     set guardPath(value) {
         this._guardPath = value;
     }
-    _decorators = [];
-    _guardPath;
     get decorators() {
         return this._decorators;
     }
@@ -56,14 +53,12 @@ export class Node {
     getDecorator(type) {
         return this.decorators.find((decorator) => decorator.getType().toUpperCase() === type.toUpperCase());
     }
-    _children = [];
     get children() {
         return this._children;
     }
     set children(value) {
         this._children = value;
     }
-    state;
     is(value) {
         return this.state.done === value.done && this.state.succeeded === value.succeeded;
     }
@@ -152,7 +147,6 @@ export class Node {
             }
         }
     }
-    postUpdate = () => { };
     abort() {
         // There is nothing to do if this node is not in the running state.
         if (!this.is(NodeState.RUNNING)) {

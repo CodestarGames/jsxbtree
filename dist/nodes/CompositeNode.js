@@ -1,12 +1,11 @@
 import { Node } from "./Node";
 import { NodeState } from "../NodeState";
 export class CompositeNode extends Node {
-    props;
     constructor(props) {
         super(props);
         this.props = props;
+        this.isLeafNode = () => false;
     }
-    key;
     abort() {
         // There is nothing to do if this node is not in the running state.
         if (!this.is(NodeState.RUNNING)) {
@@ -29,6 +28,5 @@ export class CompositeNode extends Node {
         // Reset the state of any child 
         this.children.forEach(child => child.reset());
     }
-    isLeafNode = () => false;
 }
 //# sourceMappingURL=CompositeNode.js.map

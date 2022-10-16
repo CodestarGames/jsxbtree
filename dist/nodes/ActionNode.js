@@ -1,23 +1,17 @@
 import { LeafNode } from "../nodes/LeafNode";
 import { NodeState } from "../NodeState";
 export class ActionNode extends LeafNode {
-    wrapperFn;
-    props;
-    updatePromiseStateResult;
-    isUsingUpdatePromise;
-    waitForCompletion;
-    onComplete;
     constructor(wrapperFn, props, options) {
         super(props);
         this.wrapperFn = wrapperFn;
         this.props = props;
+        this.type = 'action';
         this.waitForCompletion = options?.waitForCompletion || false;
         this.onComplete = options?.onComplete || (() => { });
     }
     getCaption() {
         return `Action`;
     }
-    type = 'action';
     reset() {
         // Reset the state of this node.
         this.setState(NodeState.READY);

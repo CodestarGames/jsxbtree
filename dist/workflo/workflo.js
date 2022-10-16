@@ -1,12 +1,6 @@
 import { NodeContainer } from "./nodecontainer";
 import { Node } from "./node";
 export class Workflo {
-    _defaultOptions;
-    _target;
-    _options;
-    _rootNodes;
-    _rootNodeContainer;
-    layoutDirection;
     constructor(target, options) {
         // The default options.
         this._defaultOptions = {};

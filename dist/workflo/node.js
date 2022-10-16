@@ -1,12 +1,5 @@
 import { populateConnectorSVG } from "./connector";
 export class Node {
-    item;
-    depth;
-    children;
-    _connectorSVG;
-    _parentContainer;
-    _options;
-    _direction;
     /**
      * A node.
      */

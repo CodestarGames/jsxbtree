@@ -1,6 +1,5 @@
 import { BTreeAttribute } from "./BTreeAttribute";
 export default class Cond extends BTreeAttribute {
-    conditionFunc;
     constructor(conditionFunc) {
         super();
         this.conditionFunc = conditionFunc;

@@ -1,6 +1,10 @@
 import { CompositeNode } from "./CompositeNode";
 import { NodeState } from "../NodeState";
 export class SelectorNode extends CompositeNode {
+    constructor() {
+        super(...arguments);
+        this.type = 'selector';
+    }
     onUpdate() {
         // Iterate over all of the children of this node.
         for (const child of this.children) {
@@ -45,6 +49,5 @@ export class SelectorNode extends CompositeNode {
     getCaption() {
         return "SELECTOR";
     }
-    type = 'selector';
 }
 //# sourceMappingURL=Selector.js.map

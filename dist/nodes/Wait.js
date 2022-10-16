@@ -1,12 +1,10 @@
 import { LeafNode } from "./LeafNode";
 import { NodeState } from "../NodeState";
 export class WaitNode extends LeafNode {
-    props;
-    initialUpdateTime;
-    duration;
     constructor(props) {
         super(props);
         this.props = props;
+        this.type = 'wait';
     }
     onUpdate() {
         // If this node is in the READY state then we need to set the initial updateState time.
@@ -28,6 +26,5 @@ export class WaitNode extends LeafNode {
     getCaption() {
         return `WAIT ${this.duration}ms`;
     }
-    type = 'wait';
 }
 //# sourceMappingURL=Wait.js.map

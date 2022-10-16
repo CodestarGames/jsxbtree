@@ -3,14 +3,16 @@
  * @param type The node decorator type.
  */
 export class BTreeAttribute {
-    /**
-     * Gets the type of the node.
-     */
-    getType = () => this.constructor.name;
-    /**
-     * Gets whether the decorator is a guard.
-     */
-    isGuard = () => false;
+    constructor() {
+        /**
+         * Gets the type of the node.
+         */
+        this.getType = () => this.constructor.name;
+        /**
+         * Gets whether the decorator is a guard.
+         */
+        this.isGuard = () => false;
+    }
     /**
      * Gets the decorator details.
      */

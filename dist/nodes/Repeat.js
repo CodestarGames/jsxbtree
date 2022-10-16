@@ -1,13 +1,6 @@
 import { CompositeNode } from "./CompositeNode";
 import { NodeState } from "../NodeState";
 export class RepeatNode extends CompositeNode {
-    props;
-    _iterations;
-    get _child() {
-        return this.children[0];
-    }
-    currentIterationCount;
-    targetIterationCount;
     /**
      * A REPEAT node.
      * The node has a single child which can have:
@@ -20,6 +13,7 @@ export class RepeatNode extends CompositeNode {
     constructor(props) {
         super(props);
         this.props = props;
+        this.type = 'repeat';
         /**
          * The number of target iterations to make.
          */
@@ -28,6 +22,9 @@ export class RepeatNode extends CompositeNode {
          * The current iteration count.
          */
         this.currentIterationCount = 0;
+    }
+    get _child() {
+        return this.children[0];
     }
     _canIterate() {
         if (this.targetIterationCount !== null) {
@@ -88,6 +85,5 @@ export class RepeatNode extends CompositeNode {
     getCaption() {
         return "REPEAT";
     }
-    type = 'repeat';
 }
 //# sourceMappingURL=Repeat.js.map
