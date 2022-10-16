@@ -59,6 +59,29 @@ export class BTreeManager {
         return treeInst;
     }
 
+    resume(treeInst) {
+        let {tick, tree} = this.trees.get(treeInst.uid);
+        let timerId;
+        if(tick !== -1)
+            timerId = this.timer.addTimer(() => this.onTickUpdate(treeInst), tick, -1);
+
+        this.trees.set(treeInst.uid, {tree, tick, timerId});
+    }
+
+    pause(treeInst) {
+        let {timerId, tick, tree} = this.trees.get(treeInst.uid);
+        this.timer.removeTimer(timerId);
+        this.timer.clear();
+        this.trees.set(treeInst.uid, {tree, tick, timerId: null});
+    }
+
+    removeTree(treeInst) {
+        let {timerId} = this.trees.get(treeInst.uid);
+        this.timer.removeTimer(timerId);
+        this.timer.clear();
+        this.trees.delete(treeInst.uid);
+    }
+
     onTickUpdate(tree) {
 
         if (!this.currentGenerators.get(tree.uid))
