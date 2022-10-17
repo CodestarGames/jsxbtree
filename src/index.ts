@@ -59,7 +59,7 @@ function wrapLeafNode<T extends LeafNode>(props, ctor: new (props) => T) {
     return leafNode;
 }
 
-function wrapActionNode<BB>(name: string, wrapperFn: (node: ActionNode<BB>) => boolean | NodeState, props, options?: { onComplete: () => void; waitForCompletion: boolean }) {
+function wrapActionNode<BB>(name: string, wrapperFn: (node: ActionNode<BB>) => boolean | NodeState | Promise< boolean| NodeState>, props, options?: { onComplete: () => void; waitForCompletion: boolean }) {
 
     let execActionNode = new ActionNode<BB>(wrapperFn, props, options);
 

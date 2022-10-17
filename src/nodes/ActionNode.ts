@@ -9,7 +9,7 @@ export class ActionNode<BB> extends LeafNode {
     waitForCompletion: boolean;
     onComplete: () => void;
 
-    constructor(readonly wrapperFn: (node: ActionNode<BB>) => boolean | NodeState, readonly props, options?: { waitForCompletion, onComplete }) {
+    constructor(readonly wrapperFn: (node: ActionNode<BB>) => boolean | NodeState | Promise< boolean| NodeState>, readonly props, options?: { waitForCompletion, onComplete }) {
         super(props);
         this.waitForCompletion = options?.waitForCompletion || false;
         this.onComplete = options?.onComplete || (() => {});
