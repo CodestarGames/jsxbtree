@@ -1,14 +1,16 @@
 import {GuardPath, GuardUnsatisifedException} from "./Guards/GuardUnsatisifedException";
-import {BTreeAttribute, BTreeCallbackFn, BTreeGuardFn} from "./Decorators/BTreeAttribute";
+import {BTreeAttribute, BTreeCallbackFn, BTreeGuardFn, BTreeMonitor} from "./Decorators/BTreeAttribute";
 import While from "./Guards/While";
 import Until from "./Guards/Until";
-import Cond from "./Decorators/Cond";
 import AlwaysSucceed from "./Decorators/AlwaysSucceed";
 import AlwaysFail from "./Decorators/AlwaysFail";
 import Entry from "./CallBacks/Entry";
 import Step from "./CallBacks/Step";
 import Exit from "./CallBacks/Exit";
 import {NodeState} from "../NodeState";
+import Cond from "./Decorators/Cond";
+import Monitor from "./Decorators/Monitor";
+import {BTreeManager} from "../BTreeManager";
 
 export interface IDecoratorsFromJSXProps {
 
@@ -18,6 +20,7 @@ export interface IDecoratorsFromJSXProps {
         step?: BTreeCallbackFn;
         exit?: BTreeCallbackFn;
         cond?: BTreeGuardFn;
+        monitor?: BTreeMonitor;
         alwaysSucceed?: any;
         alwaysFail?: any;
 
@@ -272,7 +275,7 @@ export abstract class Node implements INode {
     }
 }
 
-export function createDecoratorsFromProps(props: IDecoratorsFromJSXProps): BTreeAttribute[] {
+export function createDecoratorsFromProps(props: IDecoratorsFromJSXProps, node: Node): void {
     let decoratorsList : BTreeAttribute[] = [];
     for (let propsKey in props) {
         switch(propsKey) {
@@ -294,6 +297,11 @@ export function createDecoratorsFromProps(props: IDecoratorsFromJSXProps): BTree
             case 'cond':
                 decoratorsList.push(new Cond(props[propsKey]))
                 break;
+            case 'monitor':
+                let monitor = new Monitor(props[propsKey])
+                decoratorsList.push(monitor);
+                BTreeManager.getInstance().registerMonitor(node, monitor)
+                break;
             case 'alwaysSucceed':
                 decoratorsList.push(new AlwaysSucceed(props[propsKey]))
                 break;
@@ -302,7 +310,8 @@ export function createDecoratorsFromProps(props: IDecoratorsFromJSXProps): BTree
                 break;
         }
     }
-    return decoratorsList;
+
+    node.decorators = decoratorsList;
 }
 
 /**

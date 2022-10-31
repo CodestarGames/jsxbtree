@@ -40,7 +40,7 @@ export function cloneChildren(children: Node | Node[], props: any) {
 function wrapCompositeNode<T extends CompositeNode>(props, children: Node[], ctor: new (props) => T) {
 
     let compNode = new ctor(props)
-    compNode.decorators = createDecoratorsFromProps(props)
+    createDecoratorsFromProps(props, compNode);
     let manager = BTreeManager.getInstance();
     manager.addToNodeMap(compNode);
     compNode.children = cloneChildren(children, {parentUid: compNode.uid});
@@ -52,7 +52,7 @@ function wrapCompositeNode<T extends CompositeNode>(props, children: Node[], cto
 function wrapLeafNode<T extends LeafNode>(props, ctor: new (props) => T) {
 
     let leafNode = new ctor(props)
-    leafNode.decorators = createDecoratorsFromProps(props)
+    createDecoratorsFromProps(props, leafNode);
     let manager = BTreeManager.getInstance();
     manager.addToNodeMap(leafNode);
     leafNode.key = leafNode.uid;
@@ -63,7 +63,7 @@ function wrapActionNode<BB>(name: string, wrapperFn: (node: ActionNode<BB>) => b
 
     let execActionNode = new ActionNode<BB>(wrapperFn, props, options);
 
-    execActionNode.decorators = createDecoratorsFromProps(props);
+    createDecoratorsFromProps(props, execActionNode);
     execActionNode.getCaption = () => `${name}`
 
     let manager = BTreeManager.getInstance()

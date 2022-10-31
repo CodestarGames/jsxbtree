@@ -1,8 +1,10 @@
-import {BTreeAttribute, BTreeGuardFn} from "./BTreeAttribute";
+import {BTreeAttribute, BTreeMonitor} from "./BTreeAttribute";
 
-export default class Cond extends BTreeAttribute {
-    constructor(public conditionFunc: BTreeGuardFn) {
+export default class Monitor extends BTreeAttribute {
+    private readonly conditionFunc: (blackboard?) => boolean;
+    constructor(props: BTreeMonitor) {
         super();
+        this.conditionFunc = props.fn;
     }
 
     // isGuard = () => true;
@@ -10,7 +12,7 @@ export default class Cond extends BTreeAttribute {
         return {executionFunc: this.conditionFunc?.name || 'anonymous', type: this.getType()};
     }
 
-    evalConditionFunc(blackboard) : boolean {
+    evalConditionFunc(blackboard): boolean {
         return Boolean(this.conditionFunc(blackboard));
     }
 
@@ -18,5 +20,3 @@ export default class Cond extends BTreeAttribute {
     //     return this.conditionFunc(blackboard) === true
     // };
 }
-
-

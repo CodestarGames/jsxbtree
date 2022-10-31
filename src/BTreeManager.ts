@@ -4,6 +4,7 @@ import {Workflo} from "./workflo/workflo";
 import {NodeState} from "./NodeState";
 import {GuardPath} from "./nodes/Guards/GuardUnsatisifedException";
 import {CompositeNode} from "./nodes/CompositeNode";
+import Monitor from "./nodes/Decorators/Monitor";
 
 interface ITreeData {
     tree: BTree.Node,
@@ -16,6 +17,7 @@ export class BTreeManager {
     private timer: Timer;
     private static _instance: BTreeManager;
     private nodeMap: Map<string, Node>;
+    private monitors: Map<string, Monitor>;
     private _treeGeneratorTasks: Map<BTree.Node, Array<any>>;
     private currentGenerators: Map<string, any>;
     private workflo: Workflo;
@@ -81,6 +83,21 @@ export class BTreeManager {
             let generatorTasks = this._treeGeneratorTasks.get(tree);
             // @ts-ignore
             let child = generatorTasks[0];
+
+            for (const [key, value] of this.monitors) {
+                let isSatisfied = value.evalConditionFunc(tree.blackboard);
+                if(isSatisfied){
+                    let sNode = this.nodeMap.get(key);
+                    sNode.reset();
+
+                    //TODO: exit out of all tree nodes and execute the node in the monitor
+                    this.resetTree(tree);
+
+                    child = sNode;
+                    break;
+                }
+            }
+
             child.update();
 
             //update the debugger
@@ -255,6 +272,19 @@ export class BTreeManager {
         return flattenedTreeNodes;
     };
 
+    resetTree(tree) {
+
+        const processNode = (node: Node) => {
+            node.reset();
+            if (!node.isLeafNode()) {
+                // Process each of the nodes children if it is not a leaf node.
+                node.children.forEach((child) => processNode(child));
+            }
+        };
+        processNode(tree);
+
+    }
+
     renderDebugger(container: Window, targetElem?: HTMLElement) {
         if(!targetElem) {
             let html = `<div id="loopVisualizer" style="background: white; width: 100%; height: 100%;"></div>`;
@@ -337,4 +367,7 @@ export class BTreeManager {
         };
     };
 
+    registerMonitor(node: Node, monitor: Monitor) {
+        this.monitors.set(node.uid, monitor);
+    }
 }

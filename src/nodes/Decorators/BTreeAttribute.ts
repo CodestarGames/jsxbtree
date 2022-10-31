@@ -21,10 +21,11 @@ export abstract class BTreeAttribute {
         return {type: this.getType()};
     }
 
-
 }
 
 
 export type BTreeCallbackFn = (blackboard?) => void
 
 export type BTreeGuardFn = (blackboard?) => boolean
+
+export type BTreeMonitor = {fn: (blackboard?) => boolean};
